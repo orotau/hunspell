@@ -1,0 +1,73 @@
+###############################
+### start of Māori aff file ###
+###############################
+
+######################
+#### part 1 of 3 #####
+### basic settings ###
+######################
+
+##### set #####
+SET UTF-8
+### end set ###
+
+##### try #####
+TRY a
+### end try ###
+
+##### key #####
+KEY qwertyuiop|asdfghjkl|zxcvbnm
+### end key ###
+
+##### rep #####
+REP 6
+REP n ng
+REP ng n
+REP w wh
+REP wh w
+REP burp-factory burp_factory
+REP kare_ā_roto kare_ā-roto
+### end rep ###
+
+##### maxngramsugs #####
+MAXNGRAMSUGS 0
+### end maxngramsugs ###
+
+##### break #####
+BREAK 0
+### end break ###
+
+##### fullstrip #####
+FULLSTRIP
+### end fullstrip ###
+
+NOSPLITSUGS
+
+##### flag #####
+FLAG num
+### end flag ###
+
+########################
+##### part 2 of 3 ######
+### regular suffixes ###
+########################
+
+##### 001 of 140 #####
+SFX 1 N 1
+SFX 1 0 a
+### end 001 of 140 ###
+
+##########################
+###### part 3 of 3 #######
+### irregular suffixes ###
+##########################
+
+##### 002 of 140 #####
+SFX 2 N 2
+SFX 2 brown spingle .
+SFX 2 brown spangle .
+### end 002 of 140 ###
+
+#############################
+### end of Māori aff file ###
+#############################

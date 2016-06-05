@@ -1,0 +1,7 @@
+Hunspell notes
+It doesn't look like you can have open compounds (or mixed open compounds)
+with rules after them in the dic file
+
+you can but there is a caveat
+there is no way that I know of of doing a fullstrip of an open compound
+so just an addition is possible.

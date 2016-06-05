@@ -1,0 +1,19 @@
+break
+### This prevents foo-bar or bar-foo from being 'ok' if
+### foo and bar are in the dictionary but not foo-bar or bar-foo
+
+### PREVENT COMPOUNDS BEING CREATED ###
+# Don't know how to do this but will start with this
+MAXNGRAMSUGS 0 
+
+# Work in progress .aff file for Māori
+### AIMS
+### a) Ensure that ONLY words in the list and/or suffixes list are suggested
+### b) All entries in the .aff are easily understood and tested
+### c) The TRY order is determined by the words in the .dic file
+### d) The .dic file is automatically generated
+
+### Questions
+### 1) Should we include open compounds in the .dic file? - yes
+### 2) How do capitals behave?
+### 3) How do compounds behave?
