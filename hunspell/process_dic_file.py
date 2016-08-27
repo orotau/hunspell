@@ -1,12 +1,12 @@
 '''
 This module contains the functions used to process the
-dictionary candidates text files.
+dictionary candidates text file.
 '''
 
 import config
 from collections import Counter
 
-unwanted_characters = [".", "(", ")", ",", "'"]
+unwanted_characters = [".", "(", ")", ",", "'", " ", "-"]
 
 
 # we have to decide on these entries ...
@@ -15,7 +15,7 @@ unwanted_characters = [".", "(", ")", ",", "'"]
 Leave as is
 
 e ai . . .
-Convert to a ai
+Convert to e ai
 
 e ai ki . . .
 Convert to e ai ki
@@ -58,11 +58,7 @@ def get_letter_frequency():
 
     '''
     Get the dic candidates and return a list of
-    letter frequencies, highest to lowest, as a dictionary.
-
-    Then the list sorted from highest to lowest
-
-    Will initially include punctuation
+    letter frequencies, sorted from highest to lowest.
     '''
 
     DIC_CANDIDATES_FILE_NAME = "mi_dic_candidates.txt"
@@ -80,16 +76,14 @@ def get_letter_frequency():
  
     with open(dic_candidates_file_path, 'r') as f:
         for line in f:
-            if set(line) & set(unwanted_characters): # intersection
-                print(line)
-            else:
-                letters.extend(list(line.replace('\n', '')))
+            letters.extend(list(line.replace('\n', '')))
 
     # print(letters)
     letters_and_count = Counter(letters).most_common()
     letter_frequency = [x[0] for x in letters_and_count]
+    letter_frequency = [x for x in letter_frequency if x not in unwanted_characters]
 
-    return letters_and_count, ''.join(letter_frequency)
+    return ''.join(letter_frequency)
 
 if __name__ == '__main__':
 

@@ -15,5 +15,5 @@ MAXNGRAMSUGS 0
 
 ### Questions
 ### 1) Should we include open compounds in the .dic file? - yes
-### 2) How do capitals behave?
-### 3) How do compounds behave?
+### 2) How do capitals behave? - test
+### 3) How do compounds behave? - test
