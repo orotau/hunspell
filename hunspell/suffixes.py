@@ -1,8 +1,6 @@
 '''
-The purpose of this module is to create *an* aff file
-for Te Reo Māori
-
-It is in 3 parts
+The list of regular suffixes
+in Māori sorted order
 '''
 
 regular_suffixes = (

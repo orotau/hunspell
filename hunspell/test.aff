@@ -1,5 +1,7 @@
 ###############################
-### start of Māori aff file ###
+# Māori affix file - Creation #
+#### 27 Apr 2016, 10:45:22 ####
+##### pangakupu@gmail.com #####
 ###############################
 
 ######################
@@ -11,41 +13,62 @@
 SET UTF-8
 ### end set ###
 
-##### try #####
-TRY a
-### end try ###
+##### flag #####
+FLAG num
+### end flag ###
+
+##############################
+######## part 2 of 3 #########
+### Options for suggestion ###
+##############################
 
 ##### key #####
 KEY qwertyuiop|asdfghjkl|zxcvbnm
 ### end key ###
 
-##### rep #####
-REP 6
-REP n ng
-REP ng n
-REP w wh
-REP wh w
-REP burp-factory burp_factory
-REP kare_ā_roto kare_ā-roto
-### end rep ###
+##### try #####
+
+### end try ###
 
 ##### maxngramsugs #####
 MAXNGRAMSUGS 0
 ### end maxngramsugs ###
 
+##### nosplitsugs #####
+NOSPLITSUGS
+### end nosplitsugs ###
+
+##### rep #####
+REP 10
+REP a ā
+REP ā a
+REP e ē
+REP ē e
+REP i ī
+REP ī i
+REP o ō
+REP ō o
+REP u ū
+REP ū u
+### end rep ###
+
+##### map #####
+MAP 5
+MAP aā
+MAP eē
+MAP iī
+MAP oō
+MAP uū
+### end map ###
+
+################################
+######### part 2 of 3 ##########
+### Options for comppounding ###
+################################
+
 ##### break #####
 BREAK 0
 ### end break ###
-
-##### fullstrip #####
-FULLSTRIP
-### end fullstrip ###
-
-NOSPLITSUGS
-
-##### flag #####
-FLAG num
-### end flag ###
 
 ########################
 ##### part 2 of 3 ######
@@ -62,6 +85,10 @@ SFX 1 0 a
 ### irregular suffixes ###
 ##########################
 
+##### fullstrip #####
+FULLSTRIP
+### end fullstrip ###
+
 ##### 002 of 140 #####
 SFX 2 N 2
 SFX 2 brown spingle .
@@ -69,5 +96,5 @@ SFX 2 brown spangle .
 ### end 002 of 140 ###
 
 #############################
-### end of Māori aff file ###
+## end of Māori affix file ##
 #############################

@@ -80,15 +80,120 @@ def create_text_file(file_id):
 
     #time to create the file
     if file_id == AFF_FILE_ID:
-        all_word_forms = []
+        #http://linux.die.net/man/4/hunspell mainly as ref
+        from datetime import datetime
+        dt = datetime.now().strftime('%d %b %Y, %H:%M:%S')
+        aff_lines = {}
+
+        # Part 1
+        aff_lines['0001'] = '###############################'
+        aff_lines['0002'] = '# Māori affix file - Creation #'
+        aff_lines['0003'] = '#### ' + dt + ' ####'
+        aff_lines['0004'] = '##### pangakupu@gmail.com #####'
+        aff_lines['0005'] = '###############################'
+        aff_lines['0006'] = ''
+        aff_lines['0007'] = '######################'
+        aff_lines['0008'] = '#### part 1 of 5 #####'
+        aff_lines['0009'] = '### General Options ##'
+        aff_lines['0010'] = '######################'
+        aff_lines['0011'] = ''
+        aff_lines['0012'] = '##### set #####'
+        aff_lines['0013'] = 'SET UTF-8'
+        aff_lines['0014'] = '### end set ###'
+        aff_lines['0015'] = ''
+
+        # This rule says
+        # Each affix rule will be identified by an integer
+        aff_lines['0016'] = '##### flag #####'
+        aff_lines['0017'] = 'FLAG num'
+        aff_lines['0018'] = '### end flag ###'
+        aff_lines['0019'] = ''
+
+        # Part 2
+        aff_lines['0020'] = '##############################'
+        aff_lines['0021'] = '######## part 2 of 5 #########'
+        aff_lines['0022'] = '### Options for suggestion ###
+        aff_lines['0023'] = '##############################
+        aff_lines['0024'] = ''
+
+        aff_lines['0025'] = '##### key #####'
+        aff_lines['0026'] = 'KEY qwertyuiop|asdfghjkl|zxcvbnm'
+        aff_lines['0027'] = '### end key ###'
+        aff_lines['0028'] = ''
+
+        aff_lines['0029'] = '##### try #####'
+        aff_lines['0030'] = '# TO BE ADDED'
+        aff_lines['0031'] = '### end try ###'
+        aff_lines['0032'] = ''
+
+        # What does this rule do in practice?
+        # ANSWER HERE
+        aff_lines['0033'] = '##### maxngramsugs #####'
+        aff_lines['0034'] = 'MAXNGRAMSUGS 0'
+        aff_lines['0035'] = '### end maxngramsugs ###'
+        aff_lines['0036'] = ''
+
+        # What does this rule do in practice?
+        # ANSWER HERE
+        aff_lines['0037'] = '##### nosplitsugs #####'
+        aff_lines['0038'] = 'NOSPLITSUGS'
+        aff_lines['0039'] = '### end nosplitsugs ###'
+        aff_lines['0040'] = ''
+
+        aff_lines['0041'] = '##### rep #####'
+        aff_lines['0042'] = 'REP 10'
+        aff_lines['0043'] = 'REP a ā'
+        aff_lines['0044'] = 'REP ā a'
+        aff_lines['0045'] = 'REP e ē'
+        aff_lines['0046'] = 'REP ē e'
+        aff_lines['0047'] = 'REP i ī'
+        aff_lines['0048'] = 'REP ī i'
+        aff_lines['0049'] = 'REP o ō'
+        aff_lines['0050'] = 'REP ō o'
+        aff_lines['0051'] = 'REP u ū'
+        aff_lines['0052'] = 'REP ū u'
+        aff_lines['0053'] = '### end rep ###'
+        aff_lines['0054'] = ''
+
+        aff_lines['0055'] = '##### map #####'
+        aff_lines['0056'] = 'MAP 5'
+        aff_lines['0057'] = 'MAP aā'
+        aff_lines['0058'] = 'MAP eē'
+        aff_lines['0059'] = 'MAP iī'
+        aff_lines['0060'] = 'MAP oō'
+        aff_lines['0061'] = 'MAP uū'
+        aff_lines['0062'] = '### end map ###'
+        aff_lines['0063'] = ''
+
+        # Part 3
+        aff_lines['0064'] = '################################'
+        aff_lines['0065'] = '######### part 3 of 5 ##########'
+        aff_lines['0066'] = '### Options for comppounding ###'
+        aff_lines['0067'] = '################################'
+        aff_lines['0068'] = ''
+
+        # What does this rule do in practice?
+        # ANSWER HERE
+        aff_lines['0069'] = '##### break #####'
+        aff_lines['0070'] = 'BREAK 0'
+        aff_lines['0071'] = '### end break ###'
+        aff_lines['0072'] = ''
+
+        # Part 4
+        aff_lines['0073'] = '########################'
+        aff_lines['0074'] = '##### part 4 of 5 ######'
+        aff_lines['0075'] = '### regular suffixes ###'
+        aff_lines['0076'] = '########################'
+        aff_lines['0077'] = ''
+
+        # regular suffixes
+        LAST_LINE = '0077' # Match with whatever is above
+        import suffixes
 
         # write the file
         with open(text_file_path, "a") as myfile:
-            for candidate_word in all_word_forms:
-                if " " in candidate_word:
-                    # remove non-compound words
-                    compound_word = candidate_word                    
-                    myfile.write(compound_word + "\n")
+            for line in sorted(aff_lines.keys()):
+                myfile.write(aff_lines[line] + "\n")
         return True
 
 
