@@ -1,10 +1,197 @@
 ###############################
 # Māori affix file - Creation #
-#### 28 Aug 2016, 13:10:07 ####
+#### 28 Aug 2016, 19:50:35 ####
 ##### pangakupu@gmail.com #####
 ###############################
 
 ######################
-#### part 1 of 3 #####
-### basic settings ###
+#### part 1 of 5 #####
+### General Options ##
 ######################
+
+##### set #####
+SET UTF-8
+### end set ###
+
+##### flag #####
+FLAG num
+### end flag ###
+
+##############################
+######## part 2 of 5 #########
+### Options for suggestion ###
+##############################
+
+##### key #####
+KEY qwertyuiop|asdfghjkl|zxcvbnm
+### end key ###
+
+##### try #####
+# TO BE ADDED
+### end try ###
+
+##### maxngramsugs #####
+MAXNGRAMSUGS 0
+### end maxngramsugs ###
+
+##### nosplitsugs #####
+NOSPLITSUGS
+### end nosplitsugs ###
+
+##### rep #####
+REP 10
+REP a ā
+REP ā a
+REP e ē
+REP ē e
+REP i ī
+REP ī i
+REP o ō
+REP ō o
+REP u ū
+REP ū u
+### end rep ###
+
+##### map #####
+MAP 5
+MAP aā
+MAP eē
+MAP iī
+MAP oō
+MAP uū
+### end map ###
+
+################################
+######### part 3 of 5 ##########
+### Options for comppounding ###
+################################
+
+##### break #####
+BREAK 0
+### end break ###
+
+########################
+##### part 4 of 5 ######
+### regular suffixes ###
+########################
+
+##### 001 of 140 #####
+SFX 1 N 1
+SFX 1 0 a
+### end 001 of 140 ###
+
+##### 002 of 140 #####
+SFX 2 N 1
+SFX 2 0 ā
+### end 002 of 140 ###
+
+##### 003 of 140 #####
+SFX 3 N 1
+SFX 3 0 anga
+### end 003 of 140 ###
+
+##### 004 of 140 #####
+SFX 4 N 1
+SFX 4 0 hanga
+### end 004 of 140 ###
+
+##### 005 of 140 #####
+SFX 5 N 1
+SFX 5 0 hia
+### end 005 of 140 ###
+
+##### 006 of 140 #####
+SFX 6 N 1
+SFX 6 0 ia
+### end 006 of 140 ###
+
+##### 007 of 140 #####
+SFX 7 N 1
+SFX 7 0 ina
+### end 007 of 140 ###
+
+##### 008 of 140 #####
+SFX 8 N 1
+SFX 8 0 inga
+### end 008 of 140 ###
+
+##### 009 of 140 #####
+SFX 9 N 1
+SFX 9 0 kanga
+### end 009 of 140 ###
+
+##### 010 of 140 #####
+SFX 10 N 1
+SFX 10 0 kia
+### end 010 of 140 ###
+
+##### 011 of 140 #####
+SFX 11 N 1
+SFX 11 0 kina
+### end 011 of 140 ###
+
+##### 012 of 140 #####
+SFX 12 N 1
+SFX 12 0 manga
+### end 012 of 140 ###
+
+##### 013 of 140 #####
+SFX 13 N 1
+SFX 13 0 mia
+### end 013 of 140 ###
+
+##### 014 of 140 #####
+SFX 14 N 1
+SFX 14 0 na
+### end 014 of 140 ###
+
+##### 015 of 140 #####
+SFX 15 N 1
+SFX 15 0 nga
+### end 015 of 140 ###
+
+##### 016 of 140 #####
+SFX 16 N 1
+SFX 16 0 ngia
+### end 016 of 140 ###
+
+##### 017 of 140 #####
+SFX 17 N 1
+SFX 17 0 ranga
+### end 017 of 140 ###
+
+##### 018 of 140 #####
+SFX 18 N 1
+SFX 18 0 ria
+### end 018 of 140 ###
+
+##### 019 of 140 #####
+SFX 19 N 1
+SFX 19 0 tanga
+### end 019 of 140 ###
+
+##### 020 of 140 #####
+SFX 20 N 1
+SFX 20 0 tia
+### end 020 of 140 ###
+
+##### 021 of 140 #####
+SFX 21 N 1
+SFX 21 0 unga
+### end 021 of 140 ###
+
+##### 022 of 140 #####
+SFX 22 N 1
+SFX 22 0 whia
+### end 022 of 140 ###
+
+##### 023 of 140 #####
+SFX 23 N 1
+SFX 23 0 whina
+### end 023 of 140 ###
+
+########################
+##### part 5 of 5 ######
+## irregular suffixes ##
+########################
+
