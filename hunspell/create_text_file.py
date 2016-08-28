@@ -194,9 +194,16 @@ def create_text_file(file_id):
         SFX 1 0 a
         ### end 001 of 140 ###
 
-        '''
-        TOTAL_ALL_SUFFIXES = '140' # str
+        '''        
         import suffixes
+        total_of_suffixes = (
+            len(suffixes.regular_suffixes) +
+            len(suffixes.irregular_suffixes)
+            )
+
+        total_of_suffixes = str(total_of_suffixes).rjust(3, '0')
+        
+
         for index, suffix in enumerate(suffixes.regular_suffixes):
             suffix_number = index + 1
 
@@ -205,7 +212,7 @@ def create_text_file(file_id):
                 "##### " + 
                 str(suffix_number).rjust(3, '0') +
                 " of " +
-                TOTAL_ALL_SUFFIXES + 
+                total_of_suffixes + 
                 " #####"
                 )
 
@@ -224,7 +231,7 @@ def create_text_file(file_id):
                 "### end " + 
                 str(suffix_number).rjust(3, '0') +
                 " of " +
-                TOTAL_ALL_SUFFIXES + 
+                total_of_suffixes + 
                 " ###"
                 )
 
@@ -236,7 +243,67 @@ def create_text_file(file_id):
         aff_lines.append('##### part 5 of 5 ######')
         aff_lines.append('## irregular suffixes ##')
         aff_lines.append('########################')
-        aff_lines.append('')      
+        aff_lines.append('')     
+
+        aff_lines.append('##### fullstrip #####')
+        aff_lines.append('FULLSTRIP')
+        aff_lines.append('### end fullstrip ###')
+        aff_lines.append('') 
+
+        # irregular suffixes
+        '''
+        Each entry will have 5 or MORE lines as follows
+        ##### 123 of 140 #####
+        SFX 123 N 2
+        SFX 123 kukume kumea .
+        SFX 123 kukume kumenga .
+        ### end 123 of 140 ###
+
+        '''
+        for index, (k, v) in enumerate(suffixes.irregular_suffixes.items()):
+            suffix_number = len(suffixes.regular_suffixes) + index + 1
+
+            # first line
+            aff_lines.append(
+                "########### " + 
+                str(suffix_number).rjust(3, '0') +
+                " of " +
+                total_of_suffixes + 
+                " ###########"
+                )
+
+            # second line
+            aff_lines.append(
+                "SFX " + str(suffix_number) + " N " + str(len(v))
+                )
+        
+            # third plus line(s)
+            for word in v:
+                aff_lines.append(
+                    "SFX " + 
+                    str(suffix_number) + " " +
+                    k + " " +
+                    word + " "
+                    "."    
+                ) 
+                        
+            # penultimate line
+            aff_lines.append(
+                "######### end " + 
+                str(suffix_number).rjust(3, '0') +
+                " of " +
+                total_of_suffixes + 
+                " #########"
+                )
+
+            # last line
+            aff_lines.append('')
+
+        aff_lines.append(aff_lines[0])
+        aff_lines.append(aff_lines[1])
+        aff_lines.append(aff_lines[2])
+        aff_lines.append(aff_lines[3])
+        aff_lines.append(aff_lines[4])
 
         # write the file
         with open(text_file_path, "a") as myfile:
