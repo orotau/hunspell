@@ -1,4 +1,4 @@
 [graham-Aspire-E1-522]
 #have a / at the end of folder names
-candidate_text_files_path = /home/graham/PythonProjects/rārangi_kupu/text_files/
+dic_candidates_text_file_path = /home/graham/PythonProjects/rārangi_kupu/text_files/mi_dic_candidates.txt
 text_files_path = /home/graham/PythonProjects/hunspell/text_files/

@@ -10,6 +10,8 @@ If it is found then the user will be asked if they wish to overwrite
 '''
 import config
 import os
+import aff_suffixes
+import dic_suffixes
 
 def query_yes_no(question, default="no"):
     """Ask a yes/no question via raw_input() and return their answer.
@@ -121,17 +123,23 @@ def create_text_file(file_id):
         aff_lines.append('### end key ###')
         aff_lines.append('')
 
-        aff_lines.append('##### try #####')
-        aff_lines.append('# TO BE ADDED')
-        aff_lines.append('### end try ###')
-        aff_lines.append('')
+        #aff_lines.append('##### try #####')
+        #aff_lines.append('# Nothing looks ok at moment #')
+        #aff_lines.append('### end try ###')
+        #aff_lines.append('')
 
         # What does this rule do in practice?
-        # ANSWER HERE
-        aff_lines.append('##### maxngramsugs #####')
-        aff_lines.append('MAXNGRAMSUGS 0')
-        aff_lines.append('### end maxngramsugs ###')
-        aff_lines.append('')
+        # If we set this to 0 then the word 'man' will
+        # get no suggestions, which is unacceptable.
+        # If we set this to 999 then the word 'manākitanga' gets these 9 suggestions
+        # 'manaakitanga', 'makitatanga', 'tamarikitanga', 'matanātanga', 
+        # 'mangaekatanga', 'mamangatanga', 'mangamangatanga', 'mairangatanga', 'kiritangata'
+        # which seems a bit over the top
+        # 
+        #aff_lines.append('##### maxngramsugs #####')
+        #aff_lines.append('# Default')
+        #aff_lines.append('### end maxngramsugs ###')
+        #aff_lines.append('')
 
         # What does this rule do in practice?
         # ANSWER HERE
@@ -141,7 +149,7 @@ def create_text_file(file_id):
         aff_lines.append('')
 
         aff_lines.append('##### rep #####')
-        aff_lines.append('REP 10')
+        aff_lines.append('REP 20')
         aff_lines.append('REP a ā')
         aff_lines.append('REP ā a')
         aff_lines.append('REP e ē')
@@ -152,6 +160,16 @@ def create_text_file(file_id):
         aff_lines.append('REP ō o')
         aff_lines.append('REP u ū')
         aff_lines.append('REP ū u')
+        aff_lines.append('REP aa ā')
+        aff_lines.append('REP ā aa')
+        aff_lines.append('REP ee ē')
+        aff_lines.append('REP ē ee')
+        aff_lines.append('REP ii ī')
+        aff_lines.append('REP ī ii')
+        aff_lines.append('REP oo ō')
+        aff_lines.append('REP ō oo')
+        aff_lines.append('REP uu ū')
+        aff_lines.append('REP ū uu')
         aff_lines.append('### end rep ###')
         aff_lines.append('')
 
@@ -195,16 +213,15 @@ def create_text_file(file_id):
         ### end 001 of 140 ###
 
         '''        
-        import suffixes
         total_of_suffixes = (
-            len(suffixes.regular_suffixes) +
-            len(suffixes.irregular_suffixes)
+            len(aff_suffixes.regular_suffixes) +
+            len(aff_suffixes.irregular_suffixes)
             )
 
         total_of_suffixes = str(total_of_suffixes).rjust(3, '0')
         
 
-        for index, suffix in enumerate(suffixes.regular_suffixes):
+        for index, suffix in enumerate(aff_suffixes.regular_suffixes):
             suffix_number = index + 1
 
             # first line
@@ -260,8 +277,8 @@ def create_text_file(file_id):
         ### end 123 of 140 ###
 
         '''
-        for index, (k, v) in enumerate(suffixes.irregular_suffixes.items()):
-            suffix_number = len(suffixes.regular_suffixes) + index + 1
+        for index, (k, v) in enumerate(aff_suffixes.irregular_suffixes.items()):
+            suffix_number = len(aff_suffixes.regular_suffixes) + index + 1
 
             # first line
             aff_lines.append(
@@ -313,12 +330,59 @@ def create_text_file(file_id):
 
 
     if file_id == DIC_FILE_ID:
-        dic_candidates = []
+        
+        dic_file = []
+        dic_candidates_text_file_path = (
+            cf.configfile[cf.computername]['dic_candidates_text_file_path']
+            )
 
+        # read the candidates file
+        with open(dic_candidates_text_file_path, "r") as candidates_file:
+            for line in candidates_file:
+                candidate_word = line.replace('\n', '')
+
+                try:
+                    suffixes = dic_suffixes.words_and_suffixes[candidate_word]              
+                    
+                except KeyError:
+                    # the word has no suffixes
+                    dic_file.append(candidate_word)
+
+                else:
+                    # the candidate word has at least one suffix
+                    # each regular suffix will have 1 number associated with it
+                    # in the dic file
+
+                    # if there are any irregular suffixes they will be grouped together
+                    # and the group will have one number associated with it in the dic file
+
+                    suffix_numbers = []
+
+                    irregular_suffix_found = False                
+                    for suffix in suffixes:
+                        if suffix.startswith('-'):
+                            # we have a regular suffix
+                            suffix_numbers.append(aff_suffixes.regular_suffixes.index(suffix) + 1)                        
+                        else:
+                            # we have an irregular suffix
+                            if not irregular_suffix_found:
+                                irregular_suffix_number = (
+                                    list(aff_suffixes.irregular_suffixes.keys()).index(candidate_word) + 
+                                    1 + len(aff_suffixes.regular_suffixes)
+                                    )
+                                suffix_numbers.append(irregular_suffix_number)
+                                irregular_suffix_found = True
+                            else:
+                                pass # already processed one irregular suffix
+
+                    suffix_text = "/"+ ','.join(str(x) for x in sorted(suffix_numbers))
+                    dic_file_text = candidate_word + suffix_text
+                    dic_file.append(dic_file_text)                
+                    
         # write the file
         with open(text_file_path, "a") as myfile:
-            for candidate_word in dic_candidates:
-                myfile.write(candidate_word + "\n")
+            for dic_file_line in dic_file:
+                myfile.write(dic_file_line + "\n")
         return True
          
 
