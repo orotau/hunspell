@@ -51,6 +51,14 @@ def create_text_file(file_id):
 
     AFF_EXTENSION = "aff"
     AFF_FILE_ID = "mi_aff" # duplicated with the choices in the call
+
+    # mi_dic_words.txt is the file that contains the final words
+    # to which will be added the /number, number information (below)
+    DIC_WORDS_EXTENSION = "txt"
+    DIC_WORDS_FILE_ID = "mi_dic_words" # duplicated with the choices in the call
+
+    # mi_dic.dic is the final dictionary with /number, number added to those
+    # entries that have suffixes or prefixes (mutually exclusive)
     DIC_EXTENSION = "dic"
     DIC_FILE_ID = "mi_dic" # duplicated with the choices in the call
 
@@ -191,7 +199,8 @@ def create_text_file(file_id):
         aff_lines.append('')
 
         # What does this rule do in practice?
-        # ANSWER HERE
+        # This prevents foo-bar or bar-foo from being 'ok' if
+        # foo and bar are in the dictionary but not foo-bar or bar-foo
         aff_lines.append('##### break #####')
         aff_lines.append('BREAK 0')
         aff_lines.append('### end break ###')
@@ -329,11 +338,34 @@ def create_text_file(file_id):
         return True
 
 
+    if file_id == DIC_WORDS_FILE_ID:
+        
+        '''
+        We take the dic candidates text file and do various things to it
+        a) Deal with the 'unusual' entries in HPK
+        b) Add back in anything that was manually removed initially
+        c) Add words that are in the 'tauira' but not in the dictionary
+           How this will be done exactly is still to be decided.  
+        d) Possibly add other words (again to be decided)
+           Maybe some tech words e.g. 'Pukamata', maybe some placenames          
+        '''
+        dic_words = []
+        dic_candidates_text_file_path = (
+            cf.configfile[cf.computername]['dic_candidates_text_file_path']
+            )
+
+        # read the candidates file
+        with open(dic_candidates_text_file_path, "r") as candidates_file:
+            for line in candidates_file:
+                candidate_word = line.replace('\n', '')           
+
+
+
     if file_id == DIC_FILE_ID:
         
         dic_file = []
         dic_candidates_text_file_path = (
-            cf.configfile[cf.computername]['dic_candidates_text_file_path']
+            cf.configfile[cf.computername]['UPDATE']
             )
 
         # read the candidates file
@@ -381,6 +413,7 @@ def create_text_file(file_id):
                     
         # write the file
         with open(text_file_path, "a") as myfile:
+            myfile.write(str(len(dic_file)) + "\n")
             for dic_file_line in dic_file:
                 myfile.write(dic_file_line + "\n")
         return True
@@ -400,6 +433,7 @@ if __name__ == '__main__':
     # create the parser for the get_all_entries function
     create_text_file_parser = subparsers.add_parser('create_text_file')
     create_text_file_parser.add_argument('file_id', choices = ['mi_aff',
+                                                               'mi_dic_words',
                                                                'mi_dic'])
     create_text_file_parser.set_defaults(function = create_text_file)
 
