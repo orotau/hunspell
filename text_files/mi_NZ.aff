@@ -31,7 +31,7 @@ NOSPLITSUGS
 ### end nosplitsugs ###
 
 ##### rep #####
-REP 20
+REP 21
 REP a ā
 REP ā a
 REP e ē
@@ -52,6 +52,7 @@ REP oo ō
 REP ō oo
 REP uu ū
 REP ū uu
+REP metemea me_te_mea
 ### end rep ###
 
 ##### map #####
