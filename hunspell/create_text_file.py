@@ -12,38 +12,7 @@ import config
 import os
 import aff_suffixes
 import dic_suffixes
-
-def query_yes_no(question, default="no"):
-    """Ask a yes/no question via raw_input() and return their answer.
-
-    "question" is a string that is presented to the user.
-    "default" is the presumed answer if the user just hits <Enter>.
-        It must be "yes" (the default), "no" or None (meaning
-        an answer is required of the user).
-
-    The "answer" return value is True for "yes" or False for "no".
-    """
-    valid = {"yes": True, "y": True, "ye": True,
-             "no": False, "n": False}
-    if default is None:
-        prompt = " [y/n] "
-    elif default == "yes":
-        prompt = " [Y/n] "
-    elif default == "no":
-        prompt = " [y/N] "
-    else:
-        raise ValueError("invalid default answer: '%s'" % default)
-
-    while True:
-        sys.stdout.write(question + prompt)
-        choice = input().lower()
-        if default is not None and choice == '':
-            return valid[default]
-        elif choice in valid:
-            return valid[choice]
-        else:
-            sys.stdout.write("Please respond with 'yes' or 'no' "
-                             "(or 'y' or 'n').\n")
+import query_yes_no
 
 def create_text_file(file_id):
     #create a text file with the name file_id.AFF-OR-DIC_EXTENSION
@@ -76,7 +45,7 @@ def create_text_file(file_id):
     if os.path.isfile(text_file_path):
         # file exists, check to see if it should be overridden
         file_exists = True
-        overwrite_file = query_yes_no("Do you want to OVERWRITE the existing file?")
+        overwrite_file = query_yes_no.query_yes_no("Do you want to OVERWRITE the existing file?")
     else:
         file_exists = False
 
