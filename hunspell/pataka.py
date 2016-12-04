@@ -59,8 +59,8 @@ def get_headwords():
     '''
     all_entries = get_all_entries()
     headwords = []
-    headwords = list(set([(k.root_number, k.trunk) for k in all_entries.keys()]))
-    return headwords
+    headwords = list(set([(k.trunk, k.root_number) for k in all_entries.keys()]))
+    return sorted(headwords, key = mw.get_headword_sort_key)
 
 
 def get_passives(words_only = True):

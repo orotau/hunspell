@@ -111,6 +111,15 @@ def get_basic_dict_sort_key(dict_key_value_tuple):
     list_sort_key = get_list_sort_key(word_input)
     return list_sort_key
 
+def get_headword_sort_key(headword_number_tuple):
+    '''
+    return a key suitable for sorting a list
+    of tuples of the form (headword, number)
+    '''
+    word_input = headword_number_tuple[0]
+    list_sort_key = get_list_sort_key(word_input)
+    return list_sort_key, headword_number_tuple[1]
+
 def get_dict_sort_key(dict_key_value_tuple):
 
     '''
