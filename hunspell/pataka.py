@@ -295,7 +295,7 @@ if __name__ == '__main__':
     #print (type(result))
 
     if isinstance(result, list):
-        pprint.pprint(result)
+        #pprint.pprint(result)
         print(len(result))
     elif isinstance(result, dict):
         '''

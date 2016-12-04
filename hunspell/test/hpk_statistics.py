@@ -3,6 +3,7 @@ Core information from HPK
 Used for testing
 '''
 
+# The manual headword counts
 headwords_counts = {}
 headwords_counts['A'] = 621
 headwords_counts['E'] = 57
@@ -19,3 +20,5 @@ headwords_counts['T'] = 2631
 headwords_counts['U'] = 153
 headwords_counts['W'] = 299
 headwords_counts['Wh'] = 1132
+
+
