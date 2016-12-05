@@ -297,7 +297,13 @@ if __name__ == '__main__':
     if isinstance(result, list):
         #pprint.pprint(result)
         print(len(result))
+        for hw in result:
+            if "waenga" in hw:
+                print (hw)
     elif isinstance(result, dict):
+        for k, v in result.items():
+            print(k)
+        print (len(result))
         '''
         passives = {k:v for k,v in result.items() if v["pīmuri_whakahāngū"]}
         irregulars = []
@@ -310,7 +316,7 @@ if __name__ == '__main__':
         irregulars = [x[0] + " " + x[1] for x in irregulars] # hack to allow sorting
         irregulars = sorted(irregulars, key=mw.get_list_sort_key)
         pprint.pprint(irregulars)
-        '''
+
         for k, v in result.items():
             if v["whakamahinga_kupu_1"] == "hono":
                 print (k)
@@ -324,7 +330,7 @@ if __name__ == '__main__':
         #    for k, v in tauira.items():
         #       for t in v["tauira"]:
         #            myfile.write(t + "\n")
-
+        '''
     '''
     print ('ese not ok', len(result['ese'].not_ok))
     c = Counter(len(x) for x in result['ese'].not_ok)
