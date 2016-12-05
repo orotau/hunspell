@@ -50,7 +50,7 @@ def test_headword_counts_consonants(headwords):
         # because it will include 'Wh' and 'Ng' respectively
 
         # We are going to use the expected counts for Ng and Wh 
-        # We are assuming they have already been tested
+        # We are assuming they have already been tested as ok
 
         if letter == "W":
             letter_group_length = len(letter_group) - hpks.headwords_counts["Wh"]
