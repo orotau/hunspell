@@ -1,5 +1,5 @@
 import pytest
-import pataka
+import json_processor
 import pū
 import hpk_statistics as hpks
 
@@ -11,7 +11,7 @@ So this test shall act as a baseline
 
 @pytest.fixture(scope="module")
 def twigs():
-    twigs = pataka.get_twigs(words_only = False)
+    twigs = json_processor.get_twigs(words_only = False)
     assert len(twigs) == 1522
     return twigs
 
