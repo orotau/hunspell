@@ -37,3 +37,21 @@ twigs_counts['T'] = 332
 twigs_counts['U'] = 34
 twigs_counts['W'] = 50
 twigs_counts['Wh'] = 76
+
+# The number of distinct word forms that have at least one suffix
+words_with_suffix_counts = {}
+words_with_suffix_counts['A'] = 223
+words_with_suffix_counts['E'] = 17
+words_with_suffix_counts['H'] = 599
+words_with_suffix_counts['I'] = 41
+words_with_suffix_counts['K'] = 1032
+words_with_suffix_counts['M'] = 674
+words_with_suffix_counts['N'] = 109
+words_with_suffix_counts['Ng'] = 157
+words_with_suffix_counts['O'] = 70
+words_with_suffix_counts['P'] = 967
+words_with_suffix_counts['R'] = 295
+words_with_suffix_counts['T'] = 1323
+words_with_suffix_counts['U'] = 78
+words_with_suffix_counts['W'] = 125
+words_with_suffix_counts['Wh'] = 857
