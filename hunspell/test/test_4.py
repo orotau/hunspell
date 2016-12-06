@@ -13,11 +13,23 @@ So this test shall act as a baseline
 
 @pytest.fixture(scope="module")
 def distinct_suffixes_for_word_form():
-    distinct_suffixes_for_word_form = jps.get_distinct_suffixes_for_word_form()
-    return distinct_suffixes_for_word_form
+    return jps.get_distinct_suffixes_for_word_form()
 
-def test_suffixes_counts(distinct_suffixes_for_word_form):
-    c = Counter(itertools.chain.from_iterable(distinct_suffixes_for_word_form.values()))
-    print (c)
-    assert 1 == 2
-                
+
+@pytest.fixture(scope="module")
+def kount(distinct_suffixes_for_word_form):
+    '''
+    A dictionary counting the number of times each regular and irregular
+    suffix occurs.
+    Note this fixture uses another fixture
+    '''
+    return Counter(itertools.chain.from_iterable(distinct_suffixes_for_word_form.values()))
+
+
+def test_regular_suffixes_counts(kount):      
+    regular_suffixes = {k: v for k, v in kount.items() if k.startswith('-')}
+    for k, v in regular_suffixes.items():
+        assert hpks.suffix_counts[k] == v
+    
+    # check the total number of regular suffixes
+    assert sum(regular_suffixes.values()) == 12904                
