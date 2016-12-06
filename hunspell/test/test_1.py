@@ -5,7 +5,9 @@ import hpk_statistics as hpks
 
 @pytest.fixture(scope="module")
 def headwords():
-    return json_processor.get_headwords()
+    headwords = json_processor.get_headwords()
+    assert len(headwords) == 13358
+    return headwords
 
 def test_headword_counts_vowels(headwords):
     for letter in tuple(set(pū.vowels) & set(pū.dictionary_letters)): 
