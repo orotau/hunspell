@@ -20,7 +20,7 @@ headwords_counts['U'] = 153
 headwords_counts['W'] = 299
 headwords_counts['Wh'] = 1132
 
-# The twig counts baseline (1522 in total)
+# The twig counts baseline
 twigs_counts = {}
 twigs_counts['A'] = 81
 twigs_counts['E'] = 2
