@@ -91,7 +91,7 @@ def get_distinct_suffixes_for_word_form (word_form = "all"):
     # squash the dictionary so that each distinct word form has 
     # one and only one entry
     for k, v in all_entries_with_suffixes.items():
-        all_distinct_word_forms_with_suffixes.setdefault(k.trunk, []).append(v)            
+        all_distinct_word_forms_with_suffixes.setdefault(k.trunk, []).append(v)
 
     # flatten list of lists to one list of suffixes
     all_distinct_word_forms_with_suffixes = \

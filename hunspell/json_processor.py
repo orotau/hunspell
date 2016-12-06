@@ -32,10 +32,11 @@ def get_all_entries():
         all_entries.update(word_trees_from_json)
     return OrderedDict(sorted(all_entries.items(), key=mw.get_dict_sort_key))
 
+#Global used by all the functions below
+all_entries = get_all_entries() 
 
 def get_all_entries_as_list():
 
-    all_entries = get_all_entries()
     all_entries_as_list = []
 
     for k,v in all_entries.items():
@@ -57,7 +58,6 @@ def get_headwords():
 
     A headword is a unique 'root number, trunk' combination
     '''
-    all_entries = get_all_entries()
     headwords = []
     headwords = list(set([(k.trunk, k.root_number) for k in all_entries.keys()]))
     return sorted(headwords, key = mw.get_headword_sort_key)
@@ -72,7 +72,6 @@ def get_passives(words_only = True):
     Will return an OrderedDict of only those twigs and branches
     that have passive endings.
     '''
-    all_entries = get_all_entries()
     passives = {k:v for k,v in all_entries.items() if v["pīmuri_whakahāngū"]}
     
     if words_only:
@@ -109,7 +108,6 @@ def get_nominalisations(words_only = True):
     Will return an OrderedDict of only those twigs and branches
     that have nominalised endings.
     '''
-    all_entries = get_all_entries()
     nominalisations = {k:v for k,v in all_entries.items() if v["pīmuri_whakaingoa"]}
     
     if words_only:
@@ -147,8 +145,6 @@ def get_twigs(words_only = True, on_trunk_only = False):
     words_only will return a list
     otherwise an OrderedDict of the twigs 
     '''
-    all_entries = get_all_entries() 
-
     #all twigs
     twigs = {k:v for k,v in all_entries.items() if not k.twig is False}
 
@@ -163,52 +159,7 @@ def get_twigs(words_only = True, on_trunk_only = False):
     else:
         return OrderedDict(sorted(twigs.items(), key=mw.get_dict_sort_key))
 
-
-def get_word_forms(ese = True, n = True, p = True):
-    '''
-    The purpose of this function is to return all of the word forms
-    from HPK.
-    A word form is by definition unique
-    all compound words and
-    any word which has uppercase letters in it
-    will be *excluded*
-    '''
-    word_forms = {}
-    Word_Forms = namedtuple('Word_Forms', 'ok not_ok')
-
-    if ese:
-        all_entries_as_list = get_all_entries_as_list() #assumed unique
-        ok = [x for x in all_entries_as_list if x == x.lower()] #only all lowercase
-        ok = [x for x in ok if mw._isalllegalletters(x)] #only if no punctuation
-        not_ok = list(set(all_entries_as_list) - set(ok))
-
-        word_forms['ese'] = Word_Forms(sorted(ok, key=mw.get_list_sort_key), 
-                                       sorted(not_ok, key=mw.get_list_sort_key))
-
-    if n:
-        all_nominalisations = get_nominalisations() #assumed unique
-        ok = [x for x in all_nominalisations if x == x.lower()] #only all lowercase
-        ok = [x for x in ok if mw._isalllegalletters(x)] #only if no punctuation
-        not_ok = list(set(all_nominalisations) - set(ok))
-
-        word_forms['n'] = Word_Forms(sorted(ok, key=mw.get_list_sort_key), 
-                                       sorted(not_ok, key=mw.get_list_sort_key))
-
-    if p:
-        all_passives = get_passives() #assumed unique
-        ok = [x for x in all_passives if x == x.lower()] #only all lowercase
-        ok = [x for x in ok if mw._isalllegalletters(x)] #only if no punctuation
-        not_ok = list(set(all_passives) - set(ok))
-
-        word_forms['p'] = Word_Forms(sorted(ok, key=mw.get_list_sort_key), 
-                                       sorted(not_ok, key=mw.get_list_sort_key))
-
-    return word_forms
-
-
-
-
-    
+   
 if __name__ == '__main__':
 
     import sys
@@ -251,15 +202,6 @@ if __name__ == '__main__':
     get_twigs_parser.add_argument('-words_only')
     get_twigs_parser.add_argument('-on_trunk_only')
     get_twigs_parser.set_defaults(function = get_twigs)
-
-    # create the parser for the get_word_forms function
-    get_word_forms_parser = subparsers.add_parser('get_word_forms')
-    get_word_forms_parser.add_argument('-ese')
-    get_word_forms_parser.add_argument('-n')
-    get_word_forms_parser.add_argument('-p')
-    get_word_forms_parser.set_defaults(function = get_word_forms)    
-
-
 
     # parse the arguments
     arguments = parser.parse_args()
