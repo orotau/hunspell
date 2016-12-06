@@ -1,11 +1,11 @@
 import pytest
-import pataka
+import json_processor
 import pū
 import hpk_statistics as hpks
 
 @pytest.fixture(scope="module")
 def headwords():
-    return pataka.get_headwords()
+    return json_processor.get_headwords()
 
 def test_headword_counts_vowels(headwords):
     for letter in tuple(set(pū.vowels) & set(pū.dictionary_letters)): 

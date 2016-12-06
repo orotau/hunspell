@@ -1,5 +1,5 @@
 '''
-The list of suffixes in Māori sorted order
+The list of suffixes from HPK in Māori sorted order
 '''
 
 regular_suffixes = (
