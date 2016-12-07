@@ -2,7 +2,7 @@
 Stuff specific to HPK
 '''
 
-prefixes_to_remove = (
+prefix_entries_to_remove = (
 ['hau-',
  'hia-',
  'hoko-',
@@ -20,7 +20,7 @@ prefixes_to_remove = (
  'whā-']
 )
 
-suffixes_to_remove = (
+suffix_entries_to_remove = (
 ['-na',
  '-nei',
  '-rā']
@@ -43,7 +43,7 @@ others_to_remove = (
  'takahi (i te) whare']
 )
 
-remove_these = prefixes_to_remove + suffixes_to_remove + \
+remove_these = prefix_entries_to_remove + suffix_entries_to_remove + \
                dotties_to_remove + others_to_remove 
 
 
