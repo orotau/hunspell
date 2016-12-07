@@ -4,7 +4,7 @@ import pū
 import hpk_statistics as hpks
 
 '''
-Check the counts of those words that have suffixes
+Check the counts of those words that have at least 1 suffix
 Note that I haven't counted these by hand
 So this test shall act as a baseline
 '''

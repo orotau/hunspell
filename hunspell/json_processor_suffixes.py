@@ -73,8 +73,8 @@ def get_distinct_suffixes_for_word_form (word_form = "all"):
     The purpose of get_distinct_suffixes
     is to get the distinct suffixes for the word_form passed
 
-    If no word_form is passed then all 'word forms' with suffixes
-    will be found
+    If no word_form is passed then all *unique* 'word forms' with 
+    at least one suffix will be found
 
     Return a dictionary with the following form
 

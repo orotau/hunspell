@@ -3,6 +3,10 @@ import json_processor
 import pū
 import hpk_statistics as hpks
 
+'''
+Test Headword Counts
+'''
+
 @pytest.fixture(scope="module")
 def headwords():
     headwords = json_processor.get_headwords()
