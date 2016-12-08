@@ -21,7 +21,7 @@ prefix_entries_to_remove = (
 )
 
 suffix_entries_to_remove = (
-['-na',
+['-nā',
  '-nei',
  '-rā']
 )

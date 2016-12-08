@@ -211,7 +211,7 @@ verbs_and_irregular_suffixes = (
 )
 
 duplicated_suffixed_words = (
-['ākanga'
+['ākanga',
  'autanga', 
  'huhutia', 
  'kokotia', 
