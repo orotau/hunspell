@@ -34,6 +34,12 @@ dotties_to_remove = (
  'kīhai ki . . .']
 )
 
+commas_to_remove = (
+['Āe, āe',
+ 'He meka, he meka', 
+ 'tū atu, tū mai'] 
+)
+
 others_to_remove = (
 ['E koe (E koe e koe)',
  'hohou (i te) rongo',
@@ -44,7 +50,7 @@ others_to_remove = (
 )
 
 remove_these = prefix_entries_to_remove + suffix_entries_to_remove + \
-               dotties_to_remove + others_to_remove 
+               commas_to_remove + dotties_to_remove + others_to_remove 
 
 
 add_these = (

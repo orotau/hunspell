@@ -209,3 +209,20 @@ verbs_and_irregular_suffixes = (
  'whata': ['whatā'],
  'whitawhita': ['whitanga']}
 )
+
+duplicated_suffixed_words = (
+['ākanga'
+ 'autanga', 
+ 'huhutia', 
+ 'kokotia', 
+ 'koritanga', 
+ 'mahutanga', 
+ 'oroia', 
+ 'pungatanga', 
+ 'takaia', 
+ 'tātākina', 
+ 'tāwhetanga', 
+ 'whakakātia', 
+ 'whakapēhia', 
+ 'whakariroia']
+)
