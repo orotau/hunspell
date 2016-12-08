@@ -58,5 +58,5 @@ def test_suffixes_counts_consonants(distinct_suffixes_for_word_form):
             letter_group_length = len(letter_group) - hpks.words_with_suffix_counts["Ng"]     
         else:
             letter_group_length = len(letter_group) 
-        print(letter)            
+           
         assert letter_group_length == hpks.words_with_suffix_counts[letter]               

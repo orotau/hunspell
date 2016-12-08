@@ -57,6 +57,5 @@ def test_twigs_counts_consonants(twigs):
         elif letter == "N":
             letter_group_length = len(letter_group) - hpks.twigs_counts["Ng"]     
         else:
-            letter_group_length = len(letter_group) 
-        print(letter)            
+            letter_group_length = len(letter_group)          
         assert letter_group_length == hpks.twigs_counts[letter]                     
