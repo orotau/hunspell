@@ -60,6 +60,8 @@ words_with_suffix_counts['W'] = 125
 words_with_suffix_counts['Wh'] = 857
 
 # The counts of the regular suffixes for unique word forms - 12904
+# Note that there are 14 that appear twice (see list below)
+# So the number of unique suffixed words = 12904 - 14 = 12890
 suffix_counts = {}
 suffix_counts['-a'] = 1038
 suffix_counts['-ā'] = 1

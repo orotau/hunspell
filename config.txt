@@ -3,6 +3,7 @@
 dic_candidates_text_file_path = /home/graham/PythonProjects/rārangi_kupu/text_files/mi_dic_candidates.txt
 text_files_path = /home/graham/PythonProjects/hunspell/text_files/
 json_path = /home/graham/PythonProjects/hunspell/hunspell/word_trees/
+test_dicaff_files_path = /home/graham/PythonProjects/hunspell/hunspell/test/hunspell_dicaff/
 
 [graham-ubuntu]
 #have a / at the end of folder names

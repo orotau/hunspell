@@ -1,0 +1,2 @@
+    for word in hpk_dic_words:
+        assert [x.decode() for x in hobj.suggest(word)] == [word]

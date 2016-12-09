@@ -55,7 +55,12 @@ def test_intersection_all(basewords, suffixed_words, irregular_verbs):
                set(basewords) & \
                set(irregular_verbs[1])) == 7 # computed number
 
+def test_all_words_for_hunspell_unique(all_words_for_hunspell):
+    assert len(all_words_for_hunspell) == len(set(all_words_for_hunspell))
+
 def test_all_words_for_hunspell(all_words_for_hunspell):
-    assert len(all_words_for_hunspell) == 1
+    # Need a breakdown of where this number comes from
+    # Ideally a venn diagram
+    assert len(all_words_for_hunspell) == 26146
     
                         
