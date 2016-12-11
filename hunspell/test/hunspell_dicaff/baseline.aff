@@ -1,0 +1,29 @@
+### The Baseline setup ###
+SET UTF-8
+BREAK 0
+NOSPLITSUGS
+
+##### map #####
+MAP 5
+MAP aā
+MAP eē
+MAP iī
+MAP oō
+MAP uū
+### end map ###
+
+##### rep #####
+REP 12
+REP aa ā
+REP ā aa
+REP ee ē
+REP ē ee
+REP ii ī
+REP ī ii
+REP oo ō
+REP ō oo
+REP uu ū
+REP ū uu
+REP ahi-kā-huka ahi_kā_huka
+REP ahi-mātini ahi_mātini
+### end rep ###
