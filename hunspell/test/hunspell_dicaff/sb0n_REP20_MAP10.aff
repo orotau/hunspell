@@ -1,0 +1,41 @@
+SET UTF-8
+BREAK 0
+NOSPLITSUGS
+
+##### rep #####
+REP 20
+REP a ā
+REP ā a
+REP e ē
+REP ē e
+REP i ī
+REP ī i
+REP o ō
+REP ō o
+REP u ū
+REP ū u
+REP aa ā
+REP ā aa
+REP ee ē
+REP ē ee
+REP ii ī
+REP ī ii
+REP oo ō
+REP ō oo
+REP uu ū
+REP ū uu
+### end rep ###
+
+##### map #####
+MAP 10
+MAP aā
+MAP eē
+MAP iī
+MAP oō
+MAP uū
+MAP āa
+MAP ēe
+MAP īi
+MAP ōo
+MAP ūu
+### end map ###

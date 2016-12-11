@@ -1,0 +1,27 @@
+### The Best basic setup ###
+SET UTF-8
+BREAK 0
+NOSPLITSUGS
+
+##### rep #####
+REP 10
+REP aa ā
+REP ā aa
+REP ee ē
+REP ē ee
+REP ii ī
+REP ī ii
+REP oo ō
+REP ō oo
+REP uu ū
+REP ū uu
+### end rep ###
+
+##### map #####
+MAP 5
+MAP aā
+MAP eē
+MAP iī
+MAP oō
+MAP uū
+### end map ###

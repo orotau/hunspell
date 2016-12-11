@@ -22,10 +22,6 @@ SET UTF-8
 KEY qwertyuiop|asdfghjkl|zxcvbnm
 ### end key ###
 
-##### maxngramsugs #####
-# USE DEFAULT
-### end maxngramsugs ###
-
 ##### nosplitsugs #####
 NOSPLITSUGS
 ### end nosplitsugs ###

@@ -1,0 +1,12 @@
+SET UTF-8
+BREAK 0
+NOSPLITSUGS
+
+##### map #####
+MAP 5
+MAP aā
+MAP eē
+MAP iī
+MAP oō
+MAP uū
+### end map ###

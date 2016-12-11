@@ -1,0 +1,8 @@
+SET UTF-8
+BREAK 0
+NOSPLITSUGS
+
+##### rep #####
+REP 1
+REP a ā
+### end rep ###
