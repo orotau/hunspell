@@ -1,0 +1,25 @@
+Types of compound word and associated issues
+
+open compound
+foo bar   in dic
+1. 'foo' and or 'bar' not in dic  (both foo and/or bar will be marked as spelling errors)
+2. 'foo' and 'bar in dic (sweet)
+3. 'foo-bar' in dic (probably no occurence)
+4. 'foo-bar' not in dic (foo-bar could be REP to foo_bar) - good idea I think. Probably
+also need to add foo and bar if they are not present in the dic. Compound only FLAG perhaps, but
+that probably won't work.
+
+hyphenated compound
+foo-bar in dic
+5. 'foo' and or 'bar' not in dic (shouldn't be a problem) - ok
+6. 'foo' and 'bar' in dic (as above) - ok but will mean that effectively
+this will allow foo bar to exist without spelling errors.
+7. 'foo bar' in dic (probably no occurence)
+8. 'foo bar' not in dic (can't rep from open to hyphenated. I don't believe) (see comment associated with 6 above)
+
+mixed compound
+foo-bar baz
+deal with the other 2 first but very similar to open compound
+
+
+
