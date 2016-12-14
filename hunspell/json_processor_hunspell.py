@@ -65,6 +65,28 @@ def get_all_words_for_hunspell():
     all_words_for_hunspell = list(set(all_words))
     return sorted(all_words_for_hunspell, key=mw.get_list_sort_key)
 
+def get_problem_words_in_compounds():
+    # a problem word is one that is part of either
+    # an open compound or a mixed compound
+    # that doesn't appear in the dictionary
+    problem_words_in_compounds = []
+    all_words_for_hunspell = get_all_words_for_hunspell()   
+    for word in all_words_for_hunspell:
+        if " " in word:
+            #get parts
+            compound_word_parts = word.split(" ")
+            for compound_word_part in compound_word_parts:
+                if compound_word_part not in all_words_for_hunspell:
+                    problem_words_in_compounds.append(compound_word_part)
+
+    # make unique
+    unique_problem_words_in_compounds = list(set(problem_words_in_compounds))
+    unique_problem_words_in_compounds = sorted(unique_problem_words_in_compounds, 
+                                               key=mw.get_list_sort_key)
+    print(unique_problem_words_in_compounds)
+    return(unique_problem_words_in_compounds)
+                    
+
 if __name__ == '__main__':
     import sys
     import argparse
@@ -90,6 +112,12 @@ if __name__ == '__main__':
     # create the parser for the get_all_words_for_hunspell function
     get_all_words_for_hunspell_parser = subparsers.add_parser('get_all_words_for_hunspell')
     get_all_words_for_hunspell_parser.set_defaults(function = get_all_words_for_hunspell)
+
+    # create the parser for the problem_words_in_compounds function
+    get_problem_words_in_compounds_parser = \
+        subparsers.add_parser('get_problem_words_in_compounds')
+    get_problem_words_in_compounds_parser.set_defaults(function = \
+        get_problem_words_in_compounds)
 
     # parse the arguments
     arguments = parser.parse_args()
