@@ -3,7 +3,7 @@ import json_processor_hunspell as jph
 import hpk_statistics as hpks
 
 '''
-Test Words for Hunspell
+Test Word Counts for Hunspell HPK words
 '''
 
 @pytest.fixture(scope="module")

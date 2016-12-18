@@ -8,7 +8,8 @@ cf = config.ConfigFile()
 test_dicaff_files_path = (cf.configfile[cf.computername]['test_dicaff_files_path'])
 
 '''
-Test Suggestions
+Test Best Structure of .aff file
+NOSPLITSUGS being tested
 '''
 
 @pytest.fixture(scope="module")
@@ -38,6 +39,7 @@ def hpk_dic_words(hpk_dic_filepath):
     assert len(hpk_dic_words) == first_line
     return hpk_dic_words
 
+@pytest.mark.skip(reason="Test used in creating the baseline aff file")
 @pytest.mark.xfail
 def test_splitsugs(hpk_dic_words, hpk_dic_filepath, test_set_break_0_filepath):
     # This shows the problem of *not* setting NOSPLITSUGS - i.e using default

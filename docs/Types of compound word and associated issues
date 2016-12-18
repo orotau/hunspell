@@ -1,13 +1,22 @@
 Types of compound word and associated issues
 
+Case is an issue
+Want to ensure (if possible) that any Capitalised words do not allow in their
+uncapitalised equivalents (unless they are in the dic too)
+
 open compound
 foo bar   in dic
 1. 'foo' and or 'bar' not in dic  (both foo and/or bar will be marked as spelling errors)
-2. 'foo' and 'bar in dic (sweet)
-3. 'foo-bar' in dic (probably no occurence)
+2. 'foo' and 'bar' in dic (sweet)
+3. 'foo-bar' in dic (probably no occurence) - good to check 
 4. 'foo-bar' not in dic (foo-bar could be REP to foo_bar) - good idea I think. Probably
-also need to add foo and bar if they are not present in the dic. Compound only FLAG perhaps, but
-that probably won't work.
+also need to add foo and bar if they are not present in the dic. Compound only FLAG perhaps, but that probably won't work.
+
+Do open compounds get suggested? Yes I think so. Need a test to show they do.
+Do open compounds always get suggested from their hypenated equivalent? Again, need a test.
+If not then add to .aff file
+
+
 
 hyphenated compound
 foo-bar in dic

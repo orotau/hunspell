@@ -1,6 +1,5 @@
 import os
 import config
-from random import shuffle
 import hunspell
 import pytest
 
@@ -8,7 +7,8 @@ cf = config.ConfigFile()
 test_dicaff_files_path = (cf.configfile[cf.computername]['test_dicaff_files_path'])
 
 '''
-Test Suggestions
+Test Suggestions in order to work towards the best basic structure for the .aff file
+Focus on the value and best structure of the REP
 '''
 
 @pytest.fixture(scope="module")
@@ -48,7 +48,7 @@ def hpk_dic_words(hpk_dic_filepath):
     assert len(hpk_dic_words) == first_line
     return hpk_dic_words
 
-
+@pytest.mark.skip(reason="Test used in creating the baseline aff file")
 @pytest.mark.xfail
 def test_rep_1(hpk_dic_words, hpk_dic_filepath, sb0n_filepath,sb0n_REP01_filepath):
     hobj_sb0n = hunspell.HunSpell(hpk_dic_filepath, sb0n_filepath)
@@ -63,7 +63,7 @@ def test_rep_1(hpk_dic_words, hpk_dic_filepath, sb0n_filepath,sb0n_REP01_filepat
             print(word, "sb0n_REP01_suggestions", sb0n_REP01_suggestions)
             assert sorted(sb0n_suggestions) == sorted(sb0n_REP01_suggestions)
 
-
+@pytest.mark.skip(reason="Test used in creating the baseline aff file")
 @pytest.mark.xfail
 def test_rep_2(hpk_dic_words, hpk_dic_filepath, sb0n_filepath, sb0n_REP11_filepath):
     hobj_sb0n = hunspell.HunSpell(hpk_dic_filepath, sb0n_filepath)

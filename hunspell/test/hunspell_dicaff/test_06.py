@@ -7,7 +7,9 @@ cf = config.ConfigFile()
 test_dicaff_files_path = (cf.configfile[cf.computername]['test_dicaff_files_path'])
 
 '''
-Test Structure of .aff file
+Test number of entries in the dic file hpk.dic = number at top of file
+Test Best Structure of .aff file
+Coding and Break being tested
 '''
 
 @pytest.fixture(scope="module")
@@ -52,17 +54,17 @@ def hpk_dic_words(hpk_dic_filepath):
     assert len(hpk_dic_words) == first_line
     return hpk_dic_words
   
-
+@pytest.mark.skip(reason="Test used in creating the baseline aff file")
 def test_dic_file_encoding(hpk_dic_filepath, test_aff_empty_filepath):
     hobj = hunspell.HunSpell(hpk_dic_filepath, test_aff_empty_filepath)
     assert hobj.get_dic_encoding() == 'ISO8859-1' # default
 
-
+@pytest.mark.skip(reason="Test used in creating the baseline aff file")
 def test_dic_file_encoding(hpk_dic_filepath, test_aff_set_only_filepath):
     hobj = hunspell.HunSpell(hpk_dic_filepath, test_aff_set_only_filepath)
     assert hobj.get_dic_encoding() == 'UTF-8'
 
-
+@pytest.mark.skip(reason="Test used in creating the baseline aff file")
 def test_break_default(hpk_dic_filepath, test_aff_empty_filepath):
     # This shows the importance of setting BREAK 0 in the .aff file
     # The default results in 'new' words being marked ok
@@ -73,7 +75,7 @@ def test_break_default(hpk_dic_filepath, test_aff_empty_filepath):
     assert hobj.spell("awa-kai") == True
     assert hobj.spell("kai-awa") == True
 
-
+@pytest.mark.skip(reason="Test used in creating the baseline aff file")
 def test_break_0(hpk_dic_filepath, test_aff_break_0_only_filepath):
     # This shows the importance of setting BREAK 0 in the .aff file
     # The BREAK 0 results in 'new' words being marked WRONG (desired behaviour)
@@ -84,7 +86,7 @@ def test_break_0(hpk_dic_filepath, test_aff_break_0_only_filepath):
     assert hobj.spell("awa-kai") == False
     assert hobj.spell("kai-awa") == False
 
-
+@pytest.mark.skip(reason="Test used in creating the baseline aff file")
 def test_encoding(hpk_dic_filepath, \
                   test_aff_set_only_filepath, \
                   test_aff_empty_filepath):
