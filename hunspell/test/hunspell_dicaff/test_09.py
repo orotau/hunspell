@@ -220,8 +220,13 @@ def test_map_4(hpk_dic_words, hpk_dic_filepath, sb0n_REP10D_MAP5_filepath, sb0n_
                 assert sorted(sb0n_REP10D_MAP5_suggestions) == sorted(sb0n_MAP5_suggestions)
 
 
-# This test shows that the order of the MAP and the REP is irrelevant
+@pytest.mark.skip(reason="Test used in creating the baseline aff file")
 def test_map_5(hpk_dic_words, hpk_dic_filepath, sb0n_REP10D_MAP5_filepath, sb0n_MAP5_REP10D_filepath):
+    '''
+    This test shows that the order of the MAP and the REP is irrelevant
+    We will be using the one that puts the MAP first as will almost certainly
+    be adding to the REPs to deal with compounding issues.
+    '''
     hobj_sb0n_REP10D_MAP5 = hunspell.HunSpell(hpk_dic_filepath, sb0n_REP10D_MAP5_filepath)
     hobj_sb0n_MAP5_REP10D = hunspell.HunSpell(hpk_dic_filepath, sb0n_MAP5_REP10D_filepath)
     for word in hpk_dic_words:

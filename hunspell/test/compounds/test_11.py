@@ -8,7 +8,10 @@ cf = config.ConfigFile()
 test_dicaff_files_path = (cf.configfile[cf.computername]['test_dicaff_files_path'])
 
 '''
-Test Suggestions
+This shows that not all 'open compounds' / 'mixed compounds' that are
+entered by the user as hyphenated compounds (in error) will result in 
+the appropriate compound being suggested.
+Thus, will need to adjust this by adding to the REP section
 '''
 
 @pytest.fixture(scope="module")
@@ -46,10 +49,5 @@ def test_map(hpk_dic_words, hpk_dic_filepath, baseline_aff_filepath):
         if " " in word:
             word_with_dashes = word.replace(" ", "-")
             suggestions = [x.decode() for x in hobj.suggest(word_with_dashes)]
-            print ("word", word)
-            print ("word with dashes", word_with_dashes)
-            print (suggestions)
-            print ("==============================")
-            for suggestion in suggestions:
-                assert suggestion in hpk_dic_words
-
+            print(word, word_with_dashes, suggestions)
+            assert any(x == word for x in suggestions)
