@@ -1,7 +1,6 @@
 [graham-Aspire-E1-522]
 #have a / at the end of folder names
-dic_candidates_text_file_path = /home/graham/PythonProjects/rārangi_kupu/text_files/mi_dic_candidates.txt
-text_files_path = /home/graham/PythonProjects/hunspell/text_files/
+dicaff_files_path= /home/graham/PythonProjects/hunspell/hunspell/dicaff_files/
 json_path = /home/graham/PythonProjects/hunspell/hunspell/word_trees/
 test_dicaff_files_path = /home/graham/PythonProjects/hunspell/hunspell/test/dicaff_files/
 

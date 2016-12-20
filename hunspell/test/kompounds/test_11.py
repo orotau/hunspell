@@ -43,7 +43,7 @@ def hpk_dic_words(hpk_dic_filepath):
     return hpk_dic_words
 
 @pytest.mark.xfail
-def test_map(hpk_dic_words, hpk_dic_filepath, baseline_aff_filepath):
+def test_compound_suggestion(hpk_dic_words, hpk_dic_filepath, baseline_aff_filepath):
     hobj = hunspell.HunSpell(hpk_dic_filepath, baseline_aff_filepath)
     for word in hpk_dic_words:
         if " " in word:
