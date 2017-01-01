@@ -57,9 +57,7 @@ def create_baseline_aff_file():
         # delete existing file
         os.remove(baseline_file_path)
 
-
-    #time to create the file
-    #http://linux.die.net/man/4/hunspell mainly as ref
+    #create the file
     from datetime import datetime
     dt = datetime.now().strftime('%d %b %Y, %H:%M:%S')
     aff_lines = []
