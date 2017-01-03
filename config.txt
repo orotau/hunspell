@@ -1,9 +1,14 @@
 [graham-Aspire-E1-522]
 #have a / at the end of folder names
+
 dicaff_files_path= /home/graham/PythonProjects/hunspell/hunspell/dicaff_files/
+
 json_path = /home/graham/PythonProjects/hunspell/hunspell/word_trees/
+
 baseline_files_path = /home/graham/PythonProjects/hunspell/hunspell/baseline/
-pre_releases_files_path = /home/graham/PythonProjects/hunspell/hunspell/pre_releases/
+
+internal_releases_files_path = /home/graham/PythonProjects/hunspell/hunspell/internal_releases/
+
 releases_files_path = /home/graham/PythonProjects/hunspell/hunspell/releases/
 
 [graham-ubuntu]
