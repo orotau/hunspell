@@ -18,12 +18,15 @@ Leaning towards not allowing.
 
 import config
 import os
+import maoriword as mw
 
 RELEASE_001_NAME = "hpk"
 
 cf = config.ConfigFile()
 internal_releases_files_path = (
     cf.configfile[cf.computername]['internal_releases_files_path'])
+
+baseline_files_path = cf.configfile[cf.computername]['baseline_files_path']
 
 def get_internal_release_number(internal_release_name=RELEASE_001_NAME):
     if internal_release_name == RELEASE_001_NAME:
@@ -51,8 +54,73 @@ def get_internal_release_number(internal_release_name=RELEASE_001_NAME):
         return str(number_of_this_release).zfill(3)       
 
 
+def get_supplemental_words(list_of_words):
+    '''
+    This function takes a list of words
+    "Open compounds", e.g. "foo bar" (components 'foo' and 'bar')
+    "Mixed compounds", e.g. "foo-bar baz" (components 'foo-bar' and 'baz')
+
+    Each of these compound word types is split (by space) and the components
+    are searched for in the "list_of_words" input.
+
+    If they are not in the "list_of_words" input then they will be added to
+    the list of words to be returned (supplemental_words)
+
+    Finally the list is made unique and ordered in Māori order and returned
+    '''
+    supplemental_words = []
+    for word in list_of_words:
+        if " " in word:
+            components = word.split(" ")
+            for c in components:
+                if not c in list_of_words:
+                    supplemental_words.append(c)
+
+    if supplemental_words:
+        # make unique
+        supplemental_words = list(set(supplemental_words))        
+
+        # sort the list in Māori order
+        return sorted(supplemental_words, key=mw.get_list_sort_key)
+    else:
+        return False    
+
+
 def create_internal_release(internal_release_name=RELEASE_001_NAME):
+
     internal_release_number = get_internal_release_number(internal_release_name)
+
+    if not internal_release_number:
+        return False
+
+    if internal_release_number == "001":
+
+        # find those "open compound" or "mixed compound" words
+        # that contain 1 or more words (which could be hyphenated compounds)
+        # that are not in the .dic file
+        # known as "supplemental words"
+
+        BASELINE_DIC_FILE_NAME = "hpk.dic"
+        BASELINE_AFF_FILE_NAME = "baseline.aff"
+
+        dic_file_path = os.path.join(baseline_files_path, BASELINE_DIC_FILE_NAME)
+
+        dic_words = []
+
+        # read in the .dic file
+        with open(dic_file_path, 'r') as f:
+            for line in f:
+                dic_words.append(line.replace('\n', ''))
+
+        # get the supplemental words
+        supplemental_words = get_supplemental_words(dic_words)
+
+        return supplemental_words
+    
+    else:
+        # look for .words file
+        pass
+    
 
 if __name__ == '__main__':
 
@@ -68,6 +136,11 @@ if __name__ == '__main__':
     get_internal_release_number_parser = subparsers.add_parser('get_internal_release_number')
     get_internal_release_number_parser.add_argument('-internal_release_name')
     get_internal_release_number_parser.set_defaults(function = get_internal_release_number)
+
+    # create the parser for the create_internal_release function
+    create_internal_release_parser = subparsers.add_parser('create_internal_release')
+    create_internal_release_parser.add_argument('-internal_release_name')
+    create_internal_release_parser.set_defaults(function = create_internal_release)
 
     # parse the arguments
     arguments = parser.parse_args()

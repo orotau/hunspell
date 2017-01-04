@@ -2,14 +2,11 @@
 #have a / at the end of folder names
 
 dicaff_files_path= /home/graham/PythonProjects/hunspell/hunspell/dicaff_files/
-
 json_path = /home/graham/PythonProjects/hunspell/hunspell/word_trees/
-
 baseline_files_path = /home/graham/PythonProjects/hunspell/hunspell/baseline/
-
 internal_releases_files_path = /home/graham/PythonProjects/hunspell/hunspell/internal_releases/
-
 releases_files_path = /home/graham/PythonProjects/hunspell/hunspell/releases/
+words_files_path = /home/graham/PythonProjects/hunspell/hunspell/words/
 
 [graham-ubuntu]
 #have a / at the end of folder names
