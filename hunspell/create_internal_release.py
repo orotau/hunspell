@@ -18,6 +18,7 @@ Leaning towards not allowing.
 
 import config
 import os
+import re
 import maoriword as mw
 
 RELEASE_001_NAME = "hpk"
@@ -28,7 +29,61 @@ internal_releases_files_path = (
 
 baseline_files_path = cf.configfile[cf.computername]['baseline_files_path']
 
-def get_internal_release_number(internal_release_name=RELEASE_001_NAME):
+def internal_release_name_ok(internal_release_name):
+
+    # The internal release name must be all one word lower case (hyphenated ok)
+    # Note that this regex excludes an underscore (_) and fullstop (.)
+    # which is essential as the internal_release_name will be parsed using them.
+    
+    internal_release_name_regex = r"""
+
+    (
+    [a-zāēīōū]+     # one word (1 or more letters)
+    )
+
+    (  
+    -               # dash
+    [a-zāēīōū]+     # one word (1 or more letters)
+    )
+    *               # zero, one or more times
+              
+    """
+
+    is_fullmatch = re.fullmatch(internal_release_name_regex, 
+                                internal_release_name, 
+                                re.VERBOSE)
+
+    if is_fullmatch:
+        return True
+    else:
+        return False     
+
+
+def get_release_name(file_or_path_name):
+
+    '''
+    Given the file name or the path name 
+    (It can be either because we are looking from the right)
+    return the release name
+
+    e.g 016_banana.dic should return 'banana'
+    '''   
+    
+    if "." not in file_or_path_name:
+        print ("No dot (.) found in the file or path name")
+        return False
+    else:
+        before_dot = file_or_path_name.rsplit(".", 1)[0] 
+        if "_" not in before_dot:
+            print ("No underscore (_) found to the left of the (.) in the file or path name")
+            return False
+        else:            
+            release_name = before_dot.rsplit("_", 1)[1]
+
+    return release_name
+    
+
+def get_internal_release_number(internal_release_name):
     if internal_release_name == RELEASE_001_NAME:
         return "001"
     else:
@@ -82,13 +137,20 @@ def get_supplemental_words(list_of_words):
 
         # sort the list in Māori order
         return sorted(supplemental_words, key=mw.get_list_sort_key)
+
     else:
         return False    
 
 
 def create_internal_release(internal_release_name=RELEASE_001_NAME):
 
-    internal_release_number = get_internal_release_number(internal_release_name)
+    # At this stage (Jan 2017) if an internal re-release is required
+    # then we will need to manually delete and recreate.
+
+    if not check_internal_release_name():
+        return False
+    else:
+        internal_release_number = get_internal_release_number(internal_release_name)
 
     if not internal_release_number:
         return False
@@ -103,17 +165,29 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
         BASELINE_DIC_FILE_NAME = "hpk.dic"
         BASELINE_AFF_FILE_NAME = "baseline.aff"
 
-        dic_file_path = os.path.join(baseline_files_path, BASELINE_DIC_FILE_NAME)
+        dic_filepath = os.path.join(baseline_files_path, BASELINE_DIC_FILE_NAME)
 
         dic_words = []
 
         # read in the .dic file
-        with open(dic_file_path, 'r') as f:
+        with open(dic_filepath, "r") as f:
             for line in f:
-                dic_words.append(line.replace('\n', ''))
+                line_to_add = line.replace('\n', '')
+                try:
+                    int(line_to_add) # first line should contain an integer
+                except:
+                    dic_words.append(line_to_add)
 
         # get the supplemental words
         supplemental_words = get_supplemental_words(dic_words)
+
+        # get the open compounds
+        # there can be no open compounds in the supplemental words
+        # so only look in dic_words
+        open_compounds = []
+        for word in dic_words:
+            if " " in word and not "-" in word:
+                open_compounds.append(word)
 
         return supplemental_words
     
@@ -132,9 +206,21 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     subparsers = parser.add_subparsers()
 
+    # create the parser for the internal_release_name_ok function
+    internal_release_name_ok_parser = \
+        subparsers.add_parser('internal_release_name_ok')
+    internal_release_name_ok_parser.add_argument('internal_release_name')
+    internal_release_name_ok_parser.set_defaults \
+        (function = internal_release_name_ok)
+
+    # create the parser for the get_release_name function
+    get_release_name_parser = subparsers.add_parser('get_release_name')
+    get_release_name_parser.add_argument('file_or_path_name')
+    get_release_name_parser.set_defaults (function = get_release_name)
+
     # create the parser for the get_internal_release_number function
     get_internal_release_number_parser = subparsers.add_parser('get_internal_release_number')
-    get_internal_release_number_parser.add_argument('-internal_release_name')
+    get_internal_release_number_parser.add_argument('internal_release_name')
     get_internal_release_number_parser.set_defaults(function = get_internal_release_number)
 
     # create the parser for the create_internal_release function
