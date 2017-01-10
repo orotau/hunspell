@@ -22,6 +22,7 @@ import re
 import maoriword as mw
 
 RELEASE_001_NAME = "hpk"
+IR = "ir"
 
 cf = config.ConfigFile()
 internal_releases_files_path = (
@@ -56,31 +57,27 @@ def internal_release_name_ok(internal_release_name):
     if is_fullmatch:
         return True
     else:
+        print ("The release name must be lower case, it can contain dashes")
         return False     
 
 
-def get_release_name(file_or_path_name):
+def get_release_name(folder_or_path_name):
 
     '''
-    Given the file name or the path name 
+    Given the folder name or the path name 
     (It can be either because we are looking from the right)
     return the release name
 
-    e.g 016_banana.dic should return 'banana'
+    e.g 016_banana should return 'banana'
     '''   
     
-    if "." not in file_or_path_name:
-        print ("No dot (.) found in the file or path name")
+    try:
+        release_name = folder_or_path_name.rsplit("_", 1)[1]    
+    except IndexError:
+        print ("No underscore (_) found in the folder or path name")
         return False
-    else:
-        before_dot = file_or_path_name.rsplit(".", 1)[0] 
-        if "_" not in before_dot:
-            print ("No underscore (_) found to the left of the (.) in the file or path name")
-            return False
-        else:            
-            release_name = before_dot.rsplit("_", 1)[1]
-
-    return release_name
+    else: 
+        return release_name
     
 
 def get_internal_release_number(internal_release_name):
@@ -144,13 +141,22 @@ def get_supplemental_words(list_of_words):
 
 def create_internal_release(internal_release_name=RELEASE_001_NAME):
 
-    # At this stage (Jan 2017) if an internal re-release is required
-    # then we will need to manually delete and recreate.
-
-    if not check_internal_release_name():
+    # 1. check that the release name chosen meets the criteria
+    if not internal_release_name_ok(internal_release_name):
         return False
-    else:
-        internal_release_number = get_internal_release_number(internal_release_name)
+
+    # 2. check that the release name chosen has not been used before
+    internal_releases_folders = os.listdir(internal_releases_files_path)
+    internal_release_names = [get_release_name(x) for x in internal_releases_folders]
+    if internal_release_name in internal_release_names:
+        print ("The internal release name " + internal_release_name + " has been used before")
+        print ("Here are the names of the previous internal releases")
+        for irn in internal_release_names:
+            print (irn)
+        return False
+
+    # 3. get the internal release number for this release
+    internal_release_number = get_internal_release_number(internal_release_name)
 
     if not internal_release_number:
         return False
@@ -174,9 +180,13 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
             for line in f:
                 line_to_add = line.replace('\n', '')
                 try:
-                    int(line_to_add) # first line should contain an integer
+                    # first line should contain an integer
+                    existing_dic_words_count = int(line_to_add) 
                 except:
                     dic_words.append(line_to_add)
+        
+        # belt and braces check
+        assert existing_dic_words_count == len(dic_words)
 
         # get the supplemental words
         supplemental_words = get_supplemental_words(dic_words)
@@ -188,6 +198,21 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
         for word in dic_words:
             if " " in word and not "-" in word:
                 open_compounds.append(word)
+
+        # create the internal release directory
+        
+
+        # create and write the new internal release .dic file
+        new_dic_words_count = existing_dic_words_count + len(supplemental_words)
+        with open(new_dic_filepath, "a", encoding = 'utf-8') as myfile:
+            myfile.write(str(new_dic_words_count) + "\n")
+            for word in dic_words:
+                myfile.write(word + "\n")
+            for word in supplemental_words:
+                myfile.write(word + "\n")
+
+
+        # create and write the .aff file
 
         return supplemental_words
     
