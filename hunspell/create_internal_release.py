@@ -19,6 +19,7 @@ Leaning towards not allowing.
 import config
 import os
 import re
+from datetime import datetime
 import maoriword as mw
 
 RELEASE_001_NAME = "hpk"
@@ -79,14 +80,14 @@ def get_release_name(folder_or_path_name):
     else: 
         return release_name
 
-def get_release_number(folder_or_path_name):
+def get_internal_release_number(folder_or_path_name):
 
     '''
     Given the folder name or the path name 
     (It can be either because we are looking from the right)
-    return the release number (as integer)
+    return the internal release number (as integer)
     It is returned as integer because we need to use it as a key
-    for sorting and key = int(get_release_number) didn't work in 
+    for sorting and key = int(get_internal_release_number) didn't work in 
     'sorted'
     e.g 016_banana should return 16
 
@@ -99,9 +100,9 @@ def get_release_number(folder_or_path_name):
         print ("No underscore (_) found in the folder or path name")
         return False
 
-    release_number = int(left_of_underscore[-3:])
+    internal_release_number = int(left_of_underscore[-3:])
 
-    return release_number    
+    return internal_release_number    
     
 
 def get_most_recent_internal_release():
@@ -109,7 +110,11 @@ def get_most_recent_internal_release():
     '''
     look in the internal releases files path at all the subfolders (if any)
     find the most recent internal release (based on number)
-    return as string tuple    release number, release name
+    return as tuple    release number, release name
+
+    In the event that the most recent internal release has not yet been 
+    successfully tested (indicated by the fact that the folder name begins
+    with "ir_") then return a ValueError.
     '''    
 
     internal_releases_folders = os.listdir(internal_releases_files_path)
@@ -121,12 +126,15 @@ def get_most_recent_internal_release():
         assert all(os.path.isdir(x) for x in internal_releases_folders_paths)
 
         # get the number of the most recent internal release
-        number_of_most_recent_internal_release = max([get_release_number(x) for x in \
+        number_of_most_recent_internal_release = max([get_internal_release_number(x) for x in \
                                                  internal_releases_folders])
 
         # get the name of the most recent internal release
         most_recent_internal_release_folder = \
-            sorted(internal_releases_folders, key=get_release_number)[-1]
+            sorted(internal_releases_folders, key=get_internal_release_number)[-1]
+
+        if most_recent_internal_release_folder.startswith(IR + "_"):
+            raise ValueError("Most recent internal 'release' not yet successfully tested")
 
         name_of_most_recent_internal_release = \
             get_release_name(most_recent_internal_release_folder)
@@ -169,7 +177,7 @@ def get_supplemental_words(list_of_words):
         return sorted(supplemental_words, key=mw.get_list_sort_key)
 
     else:
-        return False    
+        return []    
 
 
 def create_internal_release(internal_release_name=RELEASE_001_NAME):
@@ -188,63 +196,128 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
             print (irn)
         return False
 
-    # 3. get the internal release number for this release
-    internal_release_number = get_internal_release_number(internal_release_name)
-
-    if not internal_release_number:
-        return False
+    # 3. get the most recent internal release
+    most_recent_internal_release = get_most_recent_internal_release()
 
     # get the .dic and .aff files we will be using
-    if internal_release_number == "001":
+    if most_recent_internal_release is None:
         current_dic_filepath = os.path.join(baseline_files_path, "hpk.dic")
         current_aff_filepath = os.path.join(baseline_files_path, "baseline.aff")
     else:
-        pass
+        most_recent_internal_release_folder_name = \
+            most_recent_internal_release[0] + "_" + most_recent_internal_release[1]
+        current_dic_filepath = os.path.join(internal_releases_files_path, 
+                                            most_recent_internal_release_folder_name,
+                                            "hpk.dic")
+        current_aff_filepath = os.path.join(internal_releases_files_path, 
+                                            most_recent_internal_release_folder_name,
+                                            "baseline.aff")
 
-    dic_words = []
+    # create the internal release folder
+    if most_recent_internal_release is None:
+        internal_release_number = "001"
+    else:
+        internal_release_number = str((int(most_recent_internal_release[0]) + 1)).zfill(3)
 
-    # read in the .dic file
-    with open(dic_filepath, "r") as f:
+    internal_release_folder_name = IR + "_" + \
+                                   internal_release_number + "_" + \
+                                   internal_release_name
+  
+    os.mkdir(os.path.join(internal_releases_files_path, 
+                          internal_release_folder_name))
+    
+
+    # read in the current .dic file
+    current_dic_words = []
+    with open(current_dic_filepath, "r") as f:
         for line in f:
             line_to_add = line.replace('\n', '')
             try:
                 # first line should contain an integer
-                existing_dic_words_count = int(line_to_add) 
+                current_dic_words_count = int(line_to_add) 
             except:
-                dic_words.append(line_to_add)
+                current_dic_words.append(line_to_add)
     
-    # belt and braces check
-    assert existing_dic_words_count == len(dic_words)
+    # belt and braces check on the current dic
+    assert current_dic_words_count == len(current_dic_words)
 
     # find those "open compound" or "mixed compound" words
     # that contain 1 or more words (which could be hyphenated compounds)
     # that are not in the .dic file - known as "supplemental words"
-    supplemental_words = get_supplemental_words(dic_words)
+    supplemental_words = get_supplemental_words(current_dic_words)    
 
-    # get the open compounds
+    # create and write the new internal release .dic file
+    new_dic_filename = internal_release_folder_name + ".dic"
+    new_dic_filepath = os.path.join(internal_releases_files_path, 
+                                    internal_release_folder_name,
+                                    new_dic_filename)
+ 
+    new_dic_words_count = current_dic_words_count + len(supplemental_words)
+    new_dic_words = sorted(current_dic_words + supplemental_words,
+                           key=mw.get_list_sort_key)
+
+    with open(new_dic_filepath, "a", encoding = 'utf-8') as myfile:
+        myfile.write(str(new_dic_words_count) + "\n")
+        for word in new_dic_words:
+            myfile.write(word + "\n")
+
+
+    # read in the current .aff file
+    current_aff_lines = []
+    with open(current_aff_filepath, "r") as f:
+        for line in f:
+            line_to_add = line.replace('\n', '')
+            current_aff_lines.append(line_to_add)
+
+    # get the open compounds (for use in the .aff file)
     # there can be no open compounds in the supplemental words
     # so only look in dic_words
     open_compounds = []
-    for word in dic_words:
+    for word in current_dic_words:
         if " " in word and not "-" in word:
             open_compounds.append(word)
 
-    # create the internal release directory
-    
+    open_compounds = sorted(open_compounds, key=mw.get_list_sort_key)
 
-    # create and write the new internal release .dic file
-    new_dic_words_count = existing_dic_words_count + len(supplemental_words)
-    with open(new_dic_filepath, "a", encoding = 'utf-8') as myfile:
-        myfile.write(str(new_dic_words_count) + "\n")
-        for word in dic_words:
-            myfile.write(word + "\n")
-        for word in supplemental_words:
-            myfile.write(word + "\n")
+    # create and write the new internal release .aff file
+    RELEASE_NAME_LINE = 1
+    DATE_LINE = 2
+    REP_NUMBER_LINE = 16
+    RELEASE_NAME_LINE_TEXT = '# Release '
+    DATE_LINE_TEXT = '#    Date '
+    REP_NUMBER_LINE_TEXT = "REP "
+  
+    new_aff_filename = internal_release_folder_name + ".aff"
+    new_aff_filepath = os.path.join(internal_releases_files_path, 
+                                    internal_release_folder_name,
+                                    new_aff_filename)
 
+    # write the file
+    with open(new_aff_filepath, "a") as myfile:
+        for line_number, current_aff_line in enumerate(current_aff_lines, 1):
+            if line_number == RELEASE_NAME_LINE:                
+                myfile.write(RELEASE_NAME_LINE_TEXT + "'" + 
+                             internal_release_folder_name + "'" + "\n")
 
-    # create and write the .aff file
+            elif line_number == DATE_LINE:
+                dt = datetime.now().strftime('%d %b %Y, %H:%M:%S')
+                myfile.write(DATE_LINE_TEXT + "'" + dt + "'" + "\n")
 
-    return supplemental_words
+            elif line_number == REP_NUMBER_LINE:
+                current_rep_number = int(current_aff_line.split(REP_NUMBER_LINE_TEXT, 1)[1])
+                new_rep_number = str(current_rep_number + len(open_compounds))
+                myfile.write(REP_NUMBER_LINE_TEXT + new_rep_number + "\n")
+
+            else:
+                myfile.write(current_aff_line + "\n")
+
+        # add the REP entries
+        for open_compound in open_compounds:
+            myfile.write(REP_NUMBER_LINE_TEXT + 
+                         open_compound.replace(" ", "-") + " " +  
+                         open_compound.replace(" ", "_") +  "\n")
+
+    return True
 
    
 

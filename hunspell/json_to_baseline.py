@@ -62,28 +62,23 @@ def create_baseline_aff_file():
     dt = datetime.now().strftime('%d %b %Y, %H:%M:%S')
     aff_lines = []
 
-    aff_lines.append('###############################')
-    aff_lines.append('# Māori affix file - BASELINE #')
-    aff_lines.append('#### ' + dt + ' ####')
-    aff_lines.append('##### pangakupu@gmail.com #####')
-    aff_lines.append('###############################')
+    aff_lines.append('# Release ' + "'" + "000_baseline" + "'")
+    aff_lines.append('#    Date ' + "'" + dt + "'")
+    aff_lines.append('# Contact ' + "'" + "pangakupu@gmail.com" + "'")
     aff_lines.append('')
     aff_lines.append('SET UTF-8')
     aff_lines.append('BREAK 0')
     aff_lines.append('NOSPLITSUGS')
     aff_lines.append('')
 
-    aff_lines.append('##### map #####')
     aff_lines.append('MAP 5')
     aff_lines.append('MAP aā')
     aff_lines.append('MAP eē')
     aff_lines.append('MAP iī')
     aff_lines.append('MAP oō')
     aff_lines.append('MAP uū')
-    aff_lines.append('### end map ###')
     aff_lines.append('')
 
-    aff_lines.append('##### rep #####')
     aff_lines.append('REP 10')
     aff_lines.append('REP aa ā')
     aff_lines.append('REP ā aa')
@@ -95,7 +90,6 @@ def create_baseline_aff_file():
     aff_lines.append('REP ō oo')
     aff_lines.append('REP uu ū')
     aff_lines.append('REP ū uu')
-    aff_lines.append('### end rep ###')
 
     # write the file
     with open(baseline_file_path, "a") as myfile:

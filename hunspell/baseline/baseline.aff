@@ -1,23 +1,18 @@
-###############################
-# Māori affix file - BASELINE #
-#### 25 Dec 2016, 22:43:20 ####
-##### pangakupu@gmail.com #####
-###############################
+# Release '000_baseline'
+#    Date '15 Jan 2017, 11:22:08'
+# Contact 'pangakupu@gmail.com'
 
 SET UTF-8
 BREAK 0
 NOSPLITSUGS
 
-##### map #####
 MAP 5
 MAP aā
 MAP eē
 MAP iī
 MAP oō
 MAP uū
-### end map ###
 
-##### rep #####
 REP 10
 REP aa ā
 REP ā aa
@@ -29,4 +24,3 @@ REP oo ō
 REP ō oo
 REP uu ū
 REP ū uu
-### end rep ###
