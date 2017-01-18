@@ -5,7 +5,7 @@ import hunspell
 import pytest
 
 cf = config.ConfigFile()
-test_dicaff_files_path = (cf.configfile[cf.computername]['test_dicaff_files_path'])
+test_dicaff_files_path = (cf.configfile[cf.computername]['dicaff_files_path'])
 
 '''
 This shows that not all 'open compounds' / 'mixed compounds' that are
@@ -42,6 +42,7 @@ def hpk_dic_words(hpk_dic_filepath):
     assert len(hpk_dic_words) == first_line
     return hpk_dic_words
 
+@pytest.mark.skip(reason="Test used in creating the baseline aff file")
 @pytest.mark.xfail
 def test_compound_suggestion(hpk_dic_words, hpk_dic_filepath, baseline_aff_filepath):
     hobj = hunspell.HunSpell(hpk_dic_filepath, baseline_aff_filepath)
