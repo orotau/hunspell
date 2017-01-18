@@ -30,6 +30,7 @@ internal_releases_files_path = (
     cf.configfile[cf.computername]['internal_releases_files_path'])
 
 baseline_files_path = cf.configfile[cf.computername]['baseline_files_path']
+new_words_file_path = cf.configfile[cf.computername]['new_words_file_path']
 
 def internal_release_name_ok(internal_release_name):
 
@@ -147,6 +148,43 @@ def get_most_recent_internal_release():
            name_of_most_recent_internal_release    
 
 
+def get_new_words(internal_release_name):
+
+    if internal_release_name == RELEASE_001_NAME:
+        return []
+    else:
+        new_words = []
+        # there can only be 1 file in the new_words folder
+        # filter out any temporary files (ending in ~)
+        directory_contents = [x for x in os.listdir(new_words_file_path) \
+                              if not x.endswith('~')]
+        if len(directory_contents) != 1:
+            return ValueError("Only 1 lonely file can be in here")
+        else:
+            content = os.path.join(new_words_file_path, directory_contents[0])
+            if os.path.isdir(content):
+                return ValueError("A file is needed, not a directory")
+            else:
+                # we have a lonely file - check its not empty
+                if os.stat(content).st_size == 0:
+                    return ValueError("The file is empty")
+                else:
+                    with open(content, "r") as f:
+                        for line in f:
+                            line_to_add = line.replace('\n', '')
+                            try:
+                                # first line should contain an integer
+                                new_words_count = int(line_to_add) 
+                            except:
+                                new_words.append(line_to_add)
+    
+            # belt and braces check on the file
+            assert new_words_count == len(new_words)
+
+            return sorted(new_words, key=mw.get_list_sort_key)       
+
+
+
 def get_supplemental_words(list_of_words):
     '''
     This function takes a list of words
@@ -225,6 +263,10 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
   
     os.mkdir(os.path.join(internal_releases_files_path, 
                           internal_release_folder_name))
+
+
+    # get the words that will be added to this release (if any)
+    new_words = get_new_words(internal_release_name)
     
 
     # read in the current .dic file
@@ -348,6 +390,11 @@ if __name__ == '__main__':
         subparsers.add_parser('get_most_recent_internal_release')
     get_most_recent_internal_release_parser.set_defaults \
         (function = get_most_recent_internal_release)
+
+    # create the parser for the get_new_words function
+    get_new_words_parser = subparsers.add_parser('get_new_words')
+    get_new_words_parser.add_argument('internal_release_name')
+    get_new_words_parser.set_defaults (function = get_new_words)
 
     # create the parser for the create_internal_release function
     create_internal_release_parser = subparsers.add_parser('create_internal_release')
