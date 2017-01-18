@@ -175,11 +175,19 @@ def get_new_words(internal_release_name):
                             try:
                                 # first line should contain an integer
                                 new_words_count = int(line_to_add) 
-                            except:
+                            except ValueError:
                                 new_words.append(line_to_add)
+                            else:
+                                print ("hi")
+                                new_words_count = -1
     
             # belt and braces check on the file
+            # count
+            print("spool", new_words)
             assert new_words_count == len(new_words)
+
+            # uniqueness
+            assert len(set(new_words)) == len(new_words)
 
             return sorted(new_words, key=mw.get_list_sort_key)       
 
@@ -267,7 +275,7 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
                           internal_release_folder_name))
 
 
-    # get the words that will be added to this release (if any)
+    # get the new words that will be added to this release (if any)
     new_words = get_new_words(internal_release_name)
     
 
@@ -284,6 +292,12 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
     
     # belt and braces check on the current dic
     assert current_dic_words_count == len(current_dic_words)
+
+
+    # merge the new words into the current .dic words
+    new_dic_words = list(set(current_dic_words) | set(new_words)) #union
+    
+
 
     # find those "open compound" or "mixed compound" words
     # that contain 1 or more words (which could be hyphenated compounds)
