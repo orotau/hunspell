@@ -170,26 +170,25 @@ def get_new_words(internal_release_name):
                     return ValueError("The file is empty")
                 else:
                     with open(content, "r") as f:
-                        for line in f:
+                        for line_number, line in enumerate(f, 1):
                             line_to_add = line.replace('\n', '')
-                            try:
-                                # first line should contain an integer
-                                new_words_count = int(line_to_add) 
-                            except ValueError:
-                                new_words.append(line_to_add)
+                            if line_number == 1:
+                                try:
+                                    # first line should contain an integer
+                                    new_words_count = int(line_to_add)
+                                except ValueError:
+                                    return ValueError("Number of words needed on line 1")                                
                             else:
-                                print ("hi")
-                                new_words_count = -1
-    
-            # belt and braces check on the file
-            # count
-            print("spool", new_words)
-            assert new_words_count == len(new_words)
+                                new_words.append(line_to_add)    
 
-            # uniqueness
-            assert len(set(new_words)) == len(new_words)
+                # belt and braces check on the file
+                # number at start of file = number of words
+                assert new_words_count == len(new_words)
 
-            return sorted(new_words, key=mw.get_list_sort_key)       
+                # uniqueness
+                assert len(set(new_words)) == len(new_words)
+
+                return sorted(new_words, key=mw.get_list_sort_key)       
 
 
 
@@ -223,7 +222,21 @@ def get_supplemental_words(list_of_words):
         return sorted(supplemental_words, key=mw.get_list_sort_key)
 
     else:
-        return []    
+        return [] 
+
+def create_internal_release_words_file(files_path, folder_name, extension, words):  
+
+    filename = folder_name + "." + extension
+    filepath = os.path.join(files_path, folder_name, filename) 
+    words_count = len(words)
+    words = sorted(words, key=mw.get_list_sort_key)
+
+    with open(filepath, "a", encoding = 'utf-8') as myfile:
+        myfile.write(str(words_count) + "\n")
+        for word in words:
+            myfile.write(word + "\n") 
+
+    return True
 
 
 def create_internal_release(internal_release_name=RELEASE_001_NAME):
@@ -294,31 +307,44 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
     assert current_dic_words_count == len(current_dic_words)
 
 
-    # merge the new words into the current .dic words
-    new_dic_words = list(set(current_dic_words) | set(new_words)) #union
-    
+    # combine the new words with the current .dic words
+    combined_dic_words = list(set(current_dic_words) | set(new_words)) # union
+
+    # the new words that are already in the current dic
+    dup_dic_words = list(set(current_dic_words) & set(new_words)) # intersection
+
+    # the new words that will be added
+    add_dic_words = list(set(new_words) - set(dup_dic_words))  
 
 
     # find those "open compound" or "mixed compound" words
     # that contain 1 or more words (which could be hyphenated compounds)
-    # that are not in the .dic file - known as "supplemental words"
-    supplemental_words = get_supplemental_words(current_dic_words)    
+    # that are not in the combined dic words - known as "supplemental words"
+    supplemental_words = get_supplemental_words(combined_dic_words)    
 
     # create and write the new internal release .dic file
-    new_dic_filename = internal_release_folder_name + ".dic"
-    new_dic_filepath = os.path.join(internal_releases_files_path, 
-                                    internal_release_folder_name,
-                                    new_dic_filename)
- 
-    new_dic_words_count = current_dic_words_count + len(supplemental_words)
-    new_dic_words = sorted(current_dic_words + supplemental_words,
-                           key=mw.get_list_sort_key)
+    create_internal_release_words_file(internal_releases_files_path,
+                                       internal_release_folder_name,
+                                       "dic",
+                                       combined_dic_words + supplemental_words)
 
-    with open(new_dic_filepath, "a", encoding = 'utf-8') as myfile:
-        myfile.write(str(new_dic_words_count) + "\n")
-        for word in new_dic_words:
-            myfile.write(word + "\n")
+    # create and write the new internal release .sup file
+    create_internal_release_words_file(internal_releases_files_path,
+                                       internal_release_folder_name,
+                                       "sup",
+                                       supplemental_words)
 
+    # create and write the new internal release .add file
+    create_internal_release_words_file(internal_releases_files_path,
+                                       internal_release_folder_name,
+                                       "add",
+                                       add_dic_words)
+
+    # create and write the new internal release .dup file
+    create_internal_release_words_file(internal_releases_files_path,
+                                       internal_release_folder_name,
+                                       "dup",
+                                       dup_dic_words)
 
     # read in the current .aff file
     current_aff_lines = []
@@ -329,9 +355,9 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
 
     # get the open compounds (for use in the .aff file)
     # there can be no open compounds in the supplemental words
-    # so only look in dic_words
+    # so only look in combined_dic_words
     open_compounds = []
-    for word in current_dic_words:
+    for word in combined_dic_words:
         if " " in word and not "-" in word:
             open_compounds.append(word)
 
