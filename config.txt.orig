@@ -15,7 +15,10 @@ json_path = /home/graham/PythonProjects/hunspell/hunspell/word_trees/
 baseline_files_path = /home/graham/PythonProjects/hunspell/hunspell/baseline/
 internal_releases_files_path = /home/graham/PythonProjects/hunspell/hunspell/internal_releases/
 releases_files_path = /home/graham/PythonProjects/hunspell/hunspell/releases/
+<<<<<<< HEAD
 new_words_file_path = /home/graham/PythonProjects/hunspell/hunspell/new_words/
+=======
+words_files_path = /home/graham/PythonProjects/hunspell/hunspell/words/
 
 [graham-Lenovo-ideapad-100S-14IBR]
 #have a / at the end of folder names
@@ -25,3 +28,4 @@ baseline_files_path = /home/graham/PythonProjects/hunspell/hunspell/baseline/
 internal_releases_files_path = /home/graham/PythonProjects/hunspell/hunspell/internal_releases/
 releases_files_path = /home/graham/PythonProjects/hunspell/hunspell/releases/
 words_files_path = /home/graham/PythonProjects/hunspell/hunspell/words/
+>>>>>>> github/development
