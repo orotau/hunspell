@@ -13,7 +13,8 @@ class ConfigFile():
 
     config_paths = {
         'graham-Aspire-E1-522': '/home/graham/PythonProjects/hunspell/config.txt',
-        'graham-ubuntu': '/home/graham/PythonProjects/hunspell/config.txt'
+        'graham-ubuntu': '/home/graham/PythonProjects/hunspell/config.txt',
+        'graham-Lenovo-ideapad-100S-14IBR': '/home/graham/PythonProjects/hunspell/config.txt'
         }
 
     def __init__(self):

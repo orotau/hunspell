@@ -5,7 +5,7 @@ import hunspell
 import pytest
 
 cf = config.ConfigFile()
-test_dicaff_files_path = (cf.configfile[cf.computername]['test_dicaff_files_path'])
+test_dicaff_files_path = (cf.configfile[cf.computername]['dicaff_files_path'])
 
 '''
 Test Best Structure of .aff file

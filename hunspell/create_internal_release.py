@@ -244,12 +244,14 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
     else:
         most_recent_internal_release_folder_name = \
             most_recent_internal_release[0] + "_" + most_recent_internal_release[1]
+        current_dic_filename = most_recent_internal_release_folder_name + ".dic"
+        current_aff_filename = most_recent_internal_release_folder_name + ".aff"
         current_dic_filepath = os.path.join(internal_releases_files_path, 
                                             most_recent_internal_release_folder_name,
-                                            "hpk.dic")
+                                            current_dic_filename)
         current_aff_filepath = os.path.join(internal_releases_files_path, 
                                             most_recent_internal_release_folder_name,
-                                            "baseline.aff")
+                                            current_aff_filename)
 
     # create the internal release folder
     if most_recent_internal_release is None:

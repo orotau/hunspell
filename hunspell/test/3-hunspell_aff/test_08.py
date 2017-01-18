@@ -4,7 +4,7 @@ import hunspell
 import pytest
 
 cf = config.ConfigFile()
-test_dicaff_files_path = (cf.configfile[cf.computername]['test_dicaff_files_path'])
+test_dicaff_files_path = (cf.configfile[cf.computername]['dicaff_files_path'])
 
 '''
 Test Suggestions in order to work towards the best basic structure for the .aff file

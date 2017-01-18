@@ -5,7 +5,7 @@ import hunspell
 import pytest
 
 cf = config.ConfigFile()
-test_dicaff_files_path = (cf.configfile[cf.computername]['test_dicaff_files_path'])
+test_dicaff_files_path = (cf.configfile[cf.computername]['dicaff_files_path'])
 
 '''
 Test Case
@@ -33,12 +33,14 @@ def empty_aff_filepath():
     EMPTY_AFF_FILE = "test_empty.aff"   
     return os.path.join(test_dicaff_files_path, EMPTY_AFF_FILE)
 
+@pytest.mark.skip(reason="Test used in creating the baseline aff file")
 def test_foo(foo_filepath, empty_aff_filepath):
     hobj = hunspell.HunSpell(foo_filepath, empty_aff_filepath)
     assert hobj.spell("foo") == True
     assert hobj.spell("Foo") == True
     assert hobj.spell("FOO") == True
 
+@pytest.mark.skip(reason="Test used in creating the baseline aff file")
 def test_Foo(Foo_filepath, empty_aff_filepath):
     hobj = hunspell.HunSpell(Foo_filepath, empty_aff_filepath)
     assert hobj.spell("foo") == False
