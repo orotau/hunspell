@@ -55,7 +55,7 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
 
     # get the .dic and .aff files we will be using
     if most_recent_stir is None:
-        current_dic_filepath = os.path.join(baseline_files_path, "hpk.dic")
+        current_dic_filepath = os.path.join(baseline_files_path, "empty.dic")
         current_aff_filepath = os.path.join(baseline_files_path, "baseline.aff")
     else:
         most_recent_stir_folder_name = \
@@ -83,11 +83,11 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
                           internal_release_folder_name))
 
 
-    # get the new words that will be added to this release (if any)
-    new_words = ru.get_new_words(internal_release_name)   
-
     # read in the current .dic file
     current_dic_words = ru.read_words_file(current_dic_filepath)
+
+    # get the new words that will be added to this release
+    new_words = ru.get_new_words()   
 
     # combine the new words with the current .dic words
     combined_dic_words = list(set(current_dic_words) | set(new_words)) # union
@@ -101,8 +101,8 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
 
     # find those "open compound" or "mixed compound" words
     # that contain 1 or more words (which could be hyphenated compounds)
-    # that are not in the combined dic words - known as "supplemental words"
-    supplemental_words = ru.get_supplemental_words(combined_dic_words)    
+    # that are not in the dic words to be added - known as "supplemental words"
+    supplemental_words = ru.get_supplemental_words(add_dic_words)    
 
     # create and write the new internal release .dic file
     ru.create_internal_release_words_file(internal_release_folder_name,
@@ -129,8 +129,8 @@ def create_internal_release(internal_release_name=RELEASE_001_NAME):
 
     # get the open compounds (for use in the .aff file)
     # there can be no open compounds in the supplemental words
-    # so only look in combined_dic_words
-    open_compounds = ru.get_open_compounds(combined_dic_words)
+    # so only look in add_dic_words
+    open_compounds = ru.get_open_compounds(add_dic_words)
 
     # create and write the new internal release .aff file
     RELEASE_NAME_LINE = 1

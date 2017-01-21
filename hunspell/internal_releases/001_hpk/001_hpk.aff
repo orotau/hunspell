@@ -1,5 +1,5 @@
-# Release 'ir_001_hpk'
-#    Date '20 Jan 2017, 19:06:11'
+# Release '001_hpk'
+#    Date '21 Jan 2017, 20:08:28'
 # Contact 'pangakupu@gmail.com'
 
 SET UTF-8
@@ -13,7 +13,7 @@ MAP iī
 MAP oō
 MAP uū
 
-REP 1446
+REP 1470
 REP aa ā
 REP ā aa
 REP ee ē
@@ -24,6 +24,30 @@ REP oo ō
 REP ō oo
 REP uu ū
 REP ū uu
+REP haukāinga hau_kāinga 
+REP hekeiho heke_iho 
+REP ināhoki	inā_hoki
+REP inārā inā_rā
+REP itemea i_te_mea
+REP metemea me_te_mea
+REP nātemea nā_te_mea
+REP nērā nē_rā
+REP nōtemea nō_te_mea
+REP nāreira nā_reira
+REP nōreira nō_reira
+REP noaatu noa_atu
+REP noatu noa_atu
+REP noaiho noa_iho
+REP noiho noa_iho
+REP paetukutuku pae_tukutuku
+REP papakāinga papa_kāinga
+REP rānō rā_anō
+REP rāia rā_ia
+REP rāpea rā_pea
+REP rawaatu rawa_atu
+REP rawatu rawa_atu
+REP tukuiho tuku_iho
+REP wākāinga wā_kāinga
 REP aha-mangō aha_mangō
 REP āhea-atu āhea_atu
 REP ahi-horokaka ahi_horokaka

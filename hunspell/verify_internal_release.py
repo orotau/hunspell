@@ -2,13 +2,18 @@
 The testing has 2 parts 
 a) The basic mechanics of the file creation that has been done
 b) The spellcheck part
+
+At the end we update file and folder names
+and update the .aff file
 '''
 
 import os
 import config
 import hunspell
+from datetime import datetime
 import release_utilities as ru
 import maoriword as mw
+import common_word_division_errors as cwde
 
 IR = "ir"
 
@@ -64,7 +69,7 @@ def verify_internal_release():
 
     if most_recent_stir is None:
         # we are verifying the first release (ir_001_hpk)
-        previous_dic_file_name = "hpk.dic"
+        previous_dic_file_name = "empty.dic"
         previous_aff_file_name = "baseline.aff"
 
         previous_dic_file_path = os.path.join(baseline_files_path, 
@@ -72,8 +77,8 @@ def verify_internal_release():
         previous_aff_file_path = os.path.join(baseline_files_path, 
                                               previous_aff_file_name)
     else:    
-        most_recent_stir_folder_name = IR + "_" + most_recent_stir[0] + "_" + \
-                                                  most_recent_stir[1]
+        most_recent_stir_folder_name = most_recent_stir[0] + "_" + \
+                                       most_recent_stir[1]
         most_recent_stir_path = os.path.join(internal_releases_files_path, 
                                              most_recent_stir_folder_name)
 
@@ -130,12 +135,7 @@ def verify_internal_release():
     current_rep_number = int(aff_lines[REP_NUMBER_LINE - 1].split \
                              (REP_NUMBER_LINE_TEXT, 1)[1])
 
-    if most_recent_stir is None:
-        # we are verifying the aff file for the first release (ir_001_hpk)
-        open_compounds_added = ru.get_open_compounds(previous_dic_words)
-    else:
-        # we are verifying a subsequent release
-        open_compounds_added = ru.get_open_compounds(add_words)
+    open_compounds_added = ru.get_open_compounds(add_words)
 
     ### ASSERTION ###
     # assert the REP number has been updated correctly
@@ -187,9 +187,62 @@ def verify_internal_release():
     ### ASSERTION - every word in the dic is spelled correctly! ###
     for word in dic_words:
         assert hobj.spell(word) == True
-    
-                    
 
+    ### ASSERTION ###
+    # assert all common word division spelling errors get the correct word suggested 
+    for wrong, right in cwde.wrong_right:
+        suggestions = [x.decode() for x in hobj.suggest(wrong)]
+        assert right in suggestions    
+    
+    # if we get this far all of the tests have passed
+    # update the file and folder names by removing the IR_
+    text_to_remove = IR + "_"
+
+    tested_release_folder_name = untested_release_folder_name[len(text_to_remove):]
+    tested_release_path = os.path.join(internal_releases_files_path, 
+                                       tested_release_folder_name)
+
+    tested_dic_file_name = tested_release_folder_name + ".dic"
+    tested_add_file_name = tested_release_folder_name + ".add"
+    tested_dup_file_name = tested_release_folder_name + ".dup"
+    tested_sup_file_name = tested_release_folder_name + ".sup"
+    tested_aff_file_name = tested_release_folder_name + ".aff"
+
+    # note that the path will be changed later
+    tested_dic_file_path = os.path.join(untested_release_path, tested_dic_file_name)
+    tested_add_file_path = os.path.join(untested_release_path, tested_add_file_name)
+    tested_dup_file_path = os.path.join(untested_release_path, tested_dup_file_name)
+    tested_sup_file_path = os.path.join(untested_release_path, tested_sup_file_name)
+    tested_aff_file_path = os.path.join(untested_release_path, tested_aff_file_name)
+
+    # files
+    os.rename(dic_file_path, tested_dic_file_path)
+    os.rename(add_file_path, tested_add_file_path)
+    os.rename(dup_file_path, tested_dup_file_path)
+    os.rename(sup_file_path, tested_sup_file_path)
+    os.rename(aff_file_path, tested_aff_file_path)
+
+    # folder
+    os.rename(untested_release_path, tested_release_path)
+
+    # also need to update the first two lines of the .aff file
+    RELEASE_NAME_LINE = 1
+    DATE_LINE = 2 
+    RELEASE_NAME_LINE_TEXT = '# Release '
+    DATE_LINE_TEXT = '#    Date '
+    tested_aff_file_path = os.path.join(tested_release_path, tested_aff_file_name)
+    with open(tested_aff_file_path, "w") as myfile:
+        for line_number, aff_line in enumerate(aff_lines, 1):
+            if line_number == RELEASE_NAME_LINE:                
+                myfile.write(RELEASE_NAME_LINE_TEXT + "'" + 
+                             tested_release_folder_name + "'" + "\n")
+
+            elif line_number == DATE_LINE:
+                dt = datetime.now().strftime('%d %b %Y, %H:%M:%S')
+                myfile.write(DATE_LINE_TEXT + "'" + dt + "'" + "\n")
+
+            else:
+                myfile.write(aff_line + "\n") 
     return True
 
 

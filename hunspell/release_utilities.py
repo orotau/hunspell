@@ -14,6 +14,8 @@ IR = "ir"
 cf = config.ConfigFile()
 internal_releases_files_path = (
     cf.configfile[cf.computername]['internal_releases_files_path'])
+new_words_file_path = (
+    cf.configfile[cf.computername]['new_words_file_path'])
 
 def read_words_file(file_path):
 
@@ -205,47 +207,44 @@ def get_untested_release():
                untested_internal_release_name
 
 
-def get_new_words(internal_release_name):
+def get_new_words():
 
-    if internal_release_name == RELEASE_001_NAME:
-        return []
+    new_words = []
+    # there can only be 1 file in the new_words folder
+    # filter out any temporary files (ending in ~)
+    directory_contents = [x for x in os.listdir(new_words_file_path) \
+                          if not x.endswith('~')]
+    if len(directory_contents) != 1:
+        return ValueError("Only 1 lonely file can be in here")
     else:
-        new_words = []
-        # there can only be 1 file in the new_words folder
-        # filter out any temporary files (ending in ~)
-        directory_contents = [x for x in os.listdir(new_words_file_path) \
-                              if not x.endswith('~')]
-        if len(directory_contents) != 1:
-            return ValueError("Only 1 lonely file can be in here")
+        content = os.path.join(new_words_file_path, directory_contents[0])
+        if os.path.isdir(content):
+            return ValueError("A file is needed, not a directory")
         else:
-            content = os.path.join(new_words_file_path, directory_contents[0])
-            if os.path.isdir(content):
-                return ValueError("A file is needed, not a directory")
+            # we have a lonely file - check its not empty
+            if os.stat(content).st_size == 0:
+                return ValueError("The file is empty")
             else:
-                # we have a lonely file - check its not empty
-                if os.stat(content).st_size == 0:
-                    return ValueError("The file is empty")
-                else:
-                    with open(content, "r") as f:
-                        for line_number, line in enumerate(f, 1):
-                            line_to_add = line.replace('\n', '')
-                            if line_number == 1:
-                                try:
-                                    # first line should contain an integer
-                                    new_words_count = int(line_to_add)
-                                except ValueError:
-                                    return ValueError("Number of words needed on line 1")                                
-                            else:
-                                new_words.append(line_to_add)    
+                with open(content, "r") as f:
+                    for line_number, line in enumerate(f, 1):
+                        line_to_add = line.replace('\n', '')
+                        if line_number == 1:
+                            try:
+                                # first line should contain an integer
+                                new_words_count = int(line_to_add)
+                            except ValueError:
+                                return ValueError("Number of words needed on line 1")                                
+                        else:
+                            new_words.append(line_to_add)    
 
-                # belt and braces check on the file
-                # number at start of file = number of words
-                assert new_words_count == len(new_words)
+            # belt and braces check on the file
+            # number at start of file = number of words
+            assert new_words_count == len(new_words)
 
-                # uniqueness
-                assert len(set(new_words)) == len(new_words)
+            # uniqueness
+            assert len(set(new_words)) == len(new_words)
 
-                return sorted(new_words, key=mw.get_list_sort_key)
+            return sorted(new_words, key=mw.get_list_sort_key)
 
 def get_open_compounds(list_of_words):
     # an open compound is a word separated by 1 or more spaces
@@ -340,7 +339,6 @@ if __name__ == '__main__':
 
     # create the parser for the get_new_words function
     get_new_words_parser = subparsers.add_parser('get_new_words')
-    get_new_words_parser.add_argument('internal_release_name')
     get_new_words_parser.set_defaults (function = get_new_words)
 
     # parse the arguments
