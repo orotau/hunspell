@@ -215,15 +215,15 @@ def get_new_words():
     directory_contents = [x for x in os.listdir(new_words_file_path) \
                           if not x.endswith('~')]
     if len(directory_contents) != 1:
-        return ValueError("Only 1 lonely file can be in here")
+        raise ValueError("Only 1 lonely file can be in here")
     else:
         content = os.path.join(new_words_file_path, directory_contents[0])
         if os.path.isdir(content):
-            return ValueError("A file is needed, not a directory")
+            raise ValueError("A file is needed, not a directory")
         else:
             # we have a lonely file - check its not empty
             if os.stat(content).st_size == 0:
-                return ValueError("The file is empty")
+                raise ValueError("The file is empty")
             else:
                 with open(content, "r") as f:
                     for line_number, line in enumerate(f, 1):
