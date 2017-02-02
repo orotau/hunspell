@@ -2,18 +2,8 @@
 An internal release has as its starting point
 a .dic file and a .aff file
 
-If we are *running for the first time*
-then we will be using hpk.dic and baseline.aff as the starting point
-There will be no .words file in this case
-
-If we are running for the *second or subsequent times*
-then we will be using the most recent .dic and .aff as the starting point
-
 In addition we will have a .words file which contains the words that will
 be added as part of the release
-
-I am unsure whether to allow (or not) an empty words file
-Leaning towards not allowing.
 '''
 
 import config
