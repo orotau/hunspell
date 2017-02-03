@@ -23,5 +23,5 @@ dicaff_files_path= /home/graham/PythonProjects/hunspell/hunspell/test/dicaff_fil
 json_path = /home/graham/PythonProjects/hunspell/hunspell/word_trees/
 baseline_files_path = /home/graham/PythonProjects/hunspell/hunspell/baseline/
 internal_releases_files_path = /home/graham/PythonProjects/hunspell/hunspell/internal_releases/
-releases_files_path = /home/graham/PythonProjects/hunspell/hunspell/releases/
+mozilla_releases_files_path = /home/graham/PythonProjects/hunspell/hunspell/mozilla_releases/
 new_words_file_path = /home/graham/PythonProjects/hunspell/hunspell/new_words/
