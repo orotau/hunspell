@@ -1,0 +1,51 @@
+New file for the takikupu addon
+
+Here is the Spanish one
+
+    {
+        "dictionaries": {
+            "es-VE": "dictionaries/es_VE.dic"
+        },
+        "version": "1.1.18.2webext",
+        "browser_specific_settings": {
+            "gecko": {
+                "id": "es-ve@dictionaries.addons.mozilla.org"
+            }
+        },
+        "name": "Spanish (Venezuela) spell check dictionary",
+        "manifest_version": 2
+    }
+
+Here is the Māori one (old dictionary new manifest.json file)
+
+    {
+        "dictionaries": {
+            "mi": "dictionaries/mi.dic"
+        },
+        "version": "0.9.9.20080630.2webext",
+        "browser_specific_settings": {
+            "gecko": {
+                "id": "mi@dictionaries.addons.mozilla.org"
+            }
+        },
+        "name": "Te Papakupu Māori",
+        "manifest_version": 2
+    }
+
+Here is a reference
+https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/manifest.json
+Here is what I will try
+
+    {
+        "dictionaries": {
+            "mi-NZ": "dictionaries/mi-NZ.dic"
+        },
+        "version": "2.0webext",
+        "browser_specific_settings": {
+            "gecko": {
+                "id": "mi-NZ@dictionaries.addons.mozilla.org"
+            }
+        },
+        "name": "Takikupu",
+        "manifest_version": 2
+    }

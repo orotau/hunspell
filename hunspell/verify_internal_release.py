@@ -164,7 +164,7 @@ def verify_internal_release():
     for word in dic_words:
         if " " in word and not "-" in word:
             word_with_dashes = word.replace(" ", "-")            
-            suggestions = [x.decode() for x in hobj.suggest(word_with_dashes)]
+            suggestions = hobj.suggest(word_with_dashes)
             assert word in suggestions
 
     ### ASSERTION ###
@@ -177,7 +177,7 @@ def verify_internal_release():
     for word in dic_words:
         if " " in word and not "-" in word:
             word_with_dashes = word.replace(" ", "-")            
-            suggestions = [x.decode() for x in hobj.suggest(word_with_dashes)]
+            suggestions = hobj.suggest(word_with_dashes)
             for suggestion in suggestions:
                 if suggestion in dic_words or suggestion.lower() in dic_words:
                     pass
@@ -191,7 +191,7 @@ def verify_internal_release():
     ### ASSERTION ###
     # assert all common word division spelling errors get the correct word suggested 
     for wrong, right in cwde.wrong_right:
-        suggestions = [x.decode() for x in hobj.suggest(wrong)]
+        suggestions = hobj.suggest(wrong)
         assert right in suggestions    
     
     # if we get this far all of the tests have passed

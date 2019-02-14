@@ -3,7 +3,8 @@ import os
 import zipfile
 import tempfile
 import shutil
-from yattag import Doc, indent
+import json
+from collections import OrderedDict
 import release_utilities as ru
 
 IR = "ir"
@@ -11,7 +12,7 @@ XPI_FILE_NAME = 'takikupu.xpi'
 EXTENSION_NAME = 'takikupu'
 LOCALE_CODE = 'mi-NZ'
 ICON_NAME = 'icon.png'
-INSTALL_NAME = 'install.rdf'
+INSTALL_NAME = 'manifest.json'
 SUBFOLDER_NAME = 'dictionaries'
 
 cf = config.ConfigFile()
@@ -21,9 +22,7 @@ mozilla_releases_files_path = (
     cf.configfile[cf.computername]['mozilla_releases_files_path'])
 
 
-def create_mozilla_release(ff_max_version, 
-                           tb_max_version, 
-                           sm_max_version):
+def create_mozilla_release():
 
     '''
     This function finds the most recent s.t.i.r (if it exits)
@@ -78,19 +77,16 @@ def create_mozilla_release(ff_max_version,
         myzip.write(most_recent_stir_path + os.sep + internal_aff_file_name,
                     arcname = os.path.join(SUBFOLDER_NAME, new_aff_file_name))
 
-        # add the install.rdf file
+        # add the manifest.json file
         version_number = int(mozilla_release_folder_name)
-        install_dot_rdf_content = get_install_dot_rdf(version_number,
-                                                      ff_max_version, 
-                                                      tb_max_version, 
-                                                      sm_max_version)
+        manifest_dot_json_content = get_manifest_dot_json(version_number)
 
         # http://stackoverflow.com/a/11967760/4679876
         tmpdir = tempfile.mkdtemp()
         tmpfile = "tmpfile"
         try:
             with open(os.path.join(tmpdir, tmpfile), "a") as myfile:
-                myfile.write(install_dot_rdf_content)
+                myfile.write(manifest_dot_json_content)
         except:
             raise
         else:
@@ -100,55 +96,16 @@ def create_mozilla_release(ff_max_version,
 
     return True
    
-
-
-def get_install_dot_rdf(version_number,
-                        ff_max_version, 
-                        tb_max_version, 
-                        sm_max_version):
-
-    doc, tag, text, line = Doc().ttl()
-
-    doc.asis('<?xml version="1.0"?>')
-
-    with tag('RDF',
-    ('xmlns', 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'),
-    ('xmlns:em', 'http://www.mozilla.org/2004/em-rdf#')
-    ):
-        with tag('Description', 
-        ('about', 'urn:mozilla:install-manifest')
-        ):
-            line('em:id', 'mi-NZ@dictionaries.addons.mozilla.org')
-            line('em:version', version_number)
-            line('em:type', 64)
-            line('em:unpack', 'true')
-            line('em:name', EXTENSION_NAME)
-
-            # Firefox     
-            doc.asis('<!-- Firefox -->')
-            with tag('em:targetApplication'):
-                with tag('Description'):
-                    line('em:id', '{ec8030f7-c20a-464f-9b0e-13a3a9e97384}')
-                    line('em:minVersion', '18.0a1')
-                    line('em:maxVersion', ff_max_version)
-
-            # Thunderbird     
-            doc.asis('<!-- Thunderbird -->')
-            with tag('em:targetApplication'):
-                with tag('Description'):
-                    line('em:id', '{3550f703-e582-4d05-9a08-453d09bdfdc6}')
-                    line('em:minVersion', '18.0a1')
-                    line('em:maxVersion', tb_max_version)
-
-            # SeaMonkey     
-            doc.asis('<!-- SeaMonkey -->')
-            with tag('em:targetApplication'):
-                with tag('Description'):
-                    line('em:id', '{92650c4d-4b8e-4d2a-b7eb-24ecf4f6b63a}')
-                    line('em:minVersion', '2.15a1')
-                    line('em:maxVersion', sm_max_version)
-
-    return indent(doc.getvalue())
+def get_manifest_dot_json(version_number):
+    # see docs for format
+    manifest_doc_json_dict = OrderedDict()
+    manifest_doc_json_dict[ "dictionaries" ] = { 'mi-NZ' : 'dictionaries/mi-NZ.dic' }
+    manifest_doc_json_dict[ "version" ] = "{:.1f}".format(version_number)
+    manifest_doc_json_dict[ "browser_specific_settings" ] = { 'gecko' : \
+                                                                                                  { "id": "mi-NZ@papakupu.addons.mozilla.org"} } 
+    manifest_doc_json_dict[ "name" ] = 'Takikupu Māori Dictionary'
+    manifest_doc_json_dict[ "manifest_version" ] = 2
+    return json.dumps(manifest_doc_json_dict, indent=4)
 
 if __name__ == '__main__':
 
@@ -162,18 +119,12 @@ if __name__ == '__main__':
 
     # create the parser for the create_mozilla_release function
     create_mozilla_release_parser = subparsers.add_parser('create_mozilla_release')
-    create_mozilla_release_parser.add_argument('ff_max_version')
-    create_mozilla_release_parser.add_argument('tb_max_version')
-    create_mozilla_release_parser.add_argument('sm_max_version')
     create_mozilla_release_parser.set_defaults(function = create_mozilla_release)
 
-    # create the parser for the get_install_dot_rdf function
-    get_install_dot_rdf_parser = subparsers.add_parser('get_install_dot_rdf')
-    get_install_dot_rdf_parser.add_argument('version_number')
-    get_install_dot_rdf_parser.add_argument('ff_max_version')
-    get_install_dot_rdf_parser.add_argument('tb_max_version')
-    get_install_dot_rdf_parser.add_argument('sm_max_version')
-    get_install_dot_rdf_parser.set_defaults(function = get_install_dot_rdf)
+    # create the parser for the get_manifest_dot_json function
+    get_manifest_dot_json_parser = subparsers.add_parser('get_manifest_dot_json')
+    get_manifest_dot_json_parser.add_argument('version_number')
+    get_manifest_dot_json_parser.set_defaults(function = get_manifest_dot_json)
 
     # parse the arguments
     arguments = parser.parse_args()
